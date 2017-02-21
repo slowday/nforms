@@ -71,7 +71,7 @@ export class Form extends FormsModel{
         });
     }
 
-    private _getOneForm(request: any, response: express.Response, next: express.NextFunction) {
+    private _getOneForm(request: any, response: express.Response, next: express.NextFunction): void {
         /* *
          * @param: form_id, form_user_type
         */

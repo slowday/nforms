@@ -30,7 +30,7 @@ export class User extends my.UserModel{
         this.router.delete('/', Auth.authJWT, Auth.getLoggedInUser, this.disableUser);
     }
 
-    private createUser(request: express.Request, response: express.Response, next: express.NextFunction) {
+    private createUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
         super.registerUser(request.body.user_details, request.body.password)
             .then((user) => {
                 response.json({
@@ -44,7 +44,7 @@ export class User extends my.UserModel{
             });
     }
 
-    private loginUser(request: express.Request, response: express.Response, next: express.NextFunction) {
+    private loginUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
         super.authenticateUser(request.body.auth)
             .then((user) => {
                 response.json({
@@ -59,7 +59,7 @@ export class User extends my.UserModel{
     }
     
     //#note: request is type any to suppress error about zushar_auth
-    private editUser(request: any, response: express.Response, next: express.NextFunction) {
+    private editUser(request: any, response: express.Response, next: express.NextFunction): void {
         super.updateUser(request.zushar_auth.id, request.body.auth, request.body.updates)
             .then((update_status) => {
                 response.json({
@@ -74,7 +74,7 @@ export class User extends my.UserModel{
     }
 
     //#note: request is type any to suppress error about zushar_auth
-    protected disableUser(request: any, response: express.Response, next: express.NextFunction) {
+    protected disableUser(request: any, response: express.Response, next: express.NextFunction): void {
         super.updateUser(request.zushar_auth.id, 
             request.body.auth, 
             {
