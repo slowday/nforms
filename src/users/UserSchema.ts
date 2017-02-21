@@ -106,5 +106,6 @@ export interface IUserModel extends mongoose.Document {
     //validation_code: string;
     deletion: boolean;
     password: string;
+    jwt_token: string;
 }
 export let userModel =  mongoose.model<IUserModel>('users', UserSchema);
