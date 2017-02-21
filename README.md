@@ -4,5 +4,5 @@
 
 ## How to install ##
 
-1. `git clone` the prject
-2. create a .env file and add PORT AND MONGO_URI environment variables
+1.`git clone` the prject
+2.create a .env file and add PORT, MONGO_URI and JWT_SECRET environment variables
