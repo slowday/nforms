@@ -4,6 +4,7 @@
 
 import * as express from 'express';
 import * as _ from 'lodash';
+import Auth from '../auth';
 import { 
     FormsModel, 
     FormContributors,
@@ -32,6 +33,7 @@ export class Form extends FormsModel{
         miniRouter.delete('/:form_id', this._removeContributor);
 
         //#install routes
+        this.router.use(Auth.authJWT, Auth.getLoggedInUser);
         this.router.use('/contributor', miniRouter);
         this.router.post('/', this._createForm);
         this.router.get('/', this._getAllForms);

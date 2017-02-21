@@ -15,7 +15,7 @@ export default class Auth extends UserModel {
      *     This is a static class whose domain is authentication and authorization
     */
     static authJWT = expressJWT({
-      secret : process.env.JWT_SECRET,
+      secret : 'b34435ccc5390ee4c5e24bdb6370a7ccaba016b1',
       userProperty : 'zushar_auth'
     });
 
@@ -46,7 +46,7 @@ export default class Auth extends UserModel {
                 };
                 next();
             })
-            .catch((err: Error) => {
+            .catch((err: any) => {
                 request.zushar_auth.isLoggedin = false;
                 next(err);
             });

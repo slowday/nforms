@@ -4,17 +4,8 @@
 
 import * as express from 'express';
 import * as my from './UserModel';
-import * as auth from '../auth';
+import Auth from '../auth';
 
-class UserController extends my.UserModel{
-    /**
-     * @docs:
-     *     exposes model to express routing and middleware
-    */
-
-    
-    
-}
 /**
  * @class: User 
  * @docs: Main class for user module
@@ -35,8 +26,8 @@ export class User extends my.UserModel{
             });
         this.router.post('/', this.createUser);
         this.router.post('/login', this.loginUser);
-        this.router.put('/', this.editUser);
-        this.router.delete('/', this.disableUser);
+        this.router.put('/', Auth.authJWT, Auth.getLoggedInUser, this.editUser);
+        this.router.delete('/', Auth.authJWT, Auth.getLoggedInUser, this.disableUser);
     }
 
     private createUser(request: express.Request, response: express.Response, next: express.NextFunction) {
