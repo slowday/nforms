@@ -19,7 +19,7 @@ export default class Auth extends UserModel {
       userProperty : 'zushar_auth'
     });
 
-    // request is type any to suppress error about zushar_auth
+     //#note: request is type any to suppress error about zushar_auth
     static getLoggedInUser(request: any, response: express.Response, next: express.NextFunction): void {
         // query for user details
         if (_.isEmpty(request.zushar_auth) || _.isNil(request.zushar_auth.id)) {
@@ -47,6 +47,7 @@ export default class Auth extends UserModel {
                 next();
             })
             .catch((err: Error) => {
+                request.zushar_auth.isLoggedin = false;
                 next(err);
             });
     }

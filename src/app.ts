@@ -10,6 +10,7 @@ import * as compression from 'compression'
 import * as helmet from 'helmet'
 import Database from './database';
 import { logger as log } from './logger';
+import { User } from './users/User';
 
 export default class Zushar {
     /**
@@ -44,6 +45,10 @@ export default class Zushar {
 
     private _appRoutes(): express.Router {
         let router = express.Router();
+        
+        //# USER
+        new User().install(); // install all the routes for user module and bind the user router as middleware to express
+        router.use('/user', User.router);
 
         //# ROOT
         router.get('/', 
