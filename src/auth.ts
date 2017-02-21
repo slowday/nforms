@@ -2,6 +2,8 @@
  * created by waweru
 */
 
+/// <reference path="../node_modules/moment/moment.d.ts" />
+
 import * as express from 'express';
 import * as expressJWT from 'express-jwt';
 import * as _ from 'lodash';

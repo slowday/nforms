@@ -20,6 +20,7 @@
 	    ],
 	    "moduleResolution": "node"
 	},
+//	"include": ["src/**/*", "test/**/*"],
 	"exclude": [
         "node_modules/",
         "old.zushar_v0.2.0/"

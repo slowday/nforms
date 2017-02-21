@@ -4,8 +4,7 @@
   "description": "a RESTful web resource for form builder tool zushar",
   "main": "index.js",
   "directories": {
-    "test": "test",
-    "src": "src"
+    "test": "test"
   },
   "dependencies": {
     "body-parser": "^1.16.1",
@@ -40,7 +39,6 @@
     "@types/jsonwebtoken": "^7.2.0",
     "@types/lodash": "^4.14.50",
     "@types/mocha": "^2.2.39",
-    "@types/moment": "^2.13.0",
     "@types/mongoose": "^4.7.6",
     "@types/morgan": "^1.7.32",
     "@types/node": "^7.0.5",
@@ -54,14 +52,19 @@
     "tslint-eslint-rules": "^3.4.0"
   },
   "scripts": {
+    "test": "mocha --reporter spec --compilers ts:ts-node/register test/**/*.spec.ts",
     "lint": "tslint -c tslint.json './src/**/*.ts' './test/**/*.ts'",
     "start:dev": "cross-env NODE_ENV=developement npm run build && concurrently \"npm run build:watch\" \"npm run start:dev-server\"",
     "build:watch": "tsc -p tsconfig.json -w",
     "build": "tsc -p tsconfig.json",
-    "start:dev-server": "nodemon --debug -L index.js",
+    "start:dev-server": "nodemon --debug -L",
     "start": "cross-env NODE_ENV=production npm run build && concurrently \"npm run build:watch\" \"node index\""
   },
   "keywords": [],
-  "author": "",
-  "license": "MIT"
+  "author": "john waweru<wambugu.john.waweru@outlook.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trendy-weshy/zushar-api.git"
+  }
 }

@@ -61,6 +61,7 @@ export default class Zushar {
                response.json({
                    name: 'zushar-api',
                    message: 'Hello! Welcome to zushar api.',
+                   version: '1.0.0',
                    timestamp: new Date().toDateString()
                });
             });
@@ -76,27 +77,11 @@ export default class Zushar {
                 next(err);
             });
 
-        if (process.env.NODE_ENV === 'production') {
-            // #prodcution
-            Zushar.app.use(
-                (err: any, request: express.Request, response: express.Response, next: express.NextFunction) => {                    
-                    log.error(err);// log all 500 errors
-                    response.status(err.status || 500);
-                    response.send(err);
-                });
-        
-        }
-        if (process.env.NODE_ENV === 'development') {
-            // #development
-            Zushar.app.use(
-                (err: any, request: express.Request, response: express.Response, next: express.NextFunction) => {
-                    log.error(err);// log all 500 errors
-                    response.status(err.status || 500);
-                    response.json({
-                      message: err.message,
-                      error: err
-                    });
-                });
-        }
+        Zushar.app.use(
+            (err: any, request: express.Request, response: express.Response, next: express.NextFunction) => {
+                log.error(err);// log all 500 errors
+                response.status(err.status || 500);
+                response.json(err);
+            });
     }
 }
