@@ -47,8 +47,8 @@ export default class Zushar {
         let router = express.Router();
         
         //# USER
-        new User().install(); // install all the routes for user module and bind the user router as middleware to express
-        router.use('/user', User.router);
+        let user_module = new User(); // install all the routes for user module and bind the user router as middleware to express
+        router.use('/user', user_module.router);
 
         //# ROOT
         router.get('/', 

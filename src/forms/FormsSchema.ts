@@ -54,15 +54,17 @@ let FormsSchema: mongoose.Schema = new mongoose.Schema({
 interface IFormsModel extends mongoose.Document{
     name: string
     form_state: string
-    author: mongoose.Schema.Types.ObjectId;
+    author: mongoose.Schema.Types.ObjectId | string;
     questions: any[];
     /*    
     //# will be uncommented once responding to forms is done
         responses: { type: Array, default: [] },
         respondants: { type: Array, default: [] },
     */
-    contributors: mongoose.Schema.Types.ObjectId[];
+    contributors: mongoose.Schema.Types.ObjectId[] | string[];
     deletion: boolean;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 // export forms model after schema compilation
 export let formsModel = mongoose.model<IFormsModel>('forms', FormsSchema);
