@@ -8,7 +8,6 @@ import * as logger from 'morgan'
 import * as bodyParser from 'body-parser'
 import * as compression from 'compression'
 import * as helmet from 'helmet'
-import * as expressJWT from 'express-jwt'
 import Database from './database';
 import { logger as log } from './logger';
 
