@@ -61,7 +61,7 @@ interface IFormsModel extends mongoose.Document{
         responses: { type: Array, default: [] },
         respondants: { type: Array, default: [] },
     */
-    contributors: mongoose.Schema.Types.ObjectId[] | string[];
+    contributors: mongoose.Schema.Types.Array | any; // suppress error while doing array manipulation
     deletion: boolean;
     createdAt?: Date;
     updatedAt?: Date;

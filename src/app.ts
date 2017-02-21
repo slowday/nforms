@@ -11,6 +11,7 @@ import * as helmet from 'helmet'
 import Database from './database';
 import { logger as log } from './logger';
 import { User } from './users/User';
+import { Form } from './forms/Forms';
 
 export default class Zushar {
     /**
@@ -49,6 +50,10 @@ export default class Zushar {
         //# USER
         let user_module = new User(); // install all the routes for user module and bind the user router as middleware to express
         router.use('/user', user_module.router);
+
+        //#FORMS 
+        let forms_module = new Form();
+        router.use('/forms', forms_module.router);
 
         //# ROOT
         router.get('/', 
