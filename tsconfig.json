@@ -1,0 +1,27 @@
+{	
+	"version": "2.1.6",
+	"compilerOptions": {
+		"allowJs": false,
+		"target": "es5",
+		"module": "commonjs",
+		"sourceMap": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"noImplicitAny": true,
+		"noEmitOnError": true,
+		"mapRoot": "./",
+		"suppressImplicitAnyIndexErrors": true,
+		"removeComments": true,
+        "preserveConstEnums": true,
+        "alwaysStrict": true,
+        "pretty": true,
+      	"typeRoots": [
+	      "./node_modules/@types"
+	    ],
+	    "moduleResolution": "node"
+	},
+	"exclude": [
+        "node_modules/",
+        "old.zushar_v0.2.0/"
+    ]
+}	

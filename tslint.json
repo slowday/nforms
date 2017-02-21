@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "tslint-eslint-rules"
+  ],
+  "rules": {
+    "no-constant-condition": true,
+    "quotemark": [true, "single", "avoid-escape"]
+  }
+}

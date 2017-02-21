@@ -1,0 +1,13 @@
+node_modules/
+.DS_Store
+old.zushar_v0.2.0/
+*.js
+*.map
+.env
+src/**/*.js
+src/**/*.map
+test/**/*.js
+test/**/*.map
+npm-debug.log
+npm-debug.log.**
+logs/**/*.log

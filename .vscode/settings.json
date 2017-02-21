@@ -1,0 +1,10 @@
+{
+    "vsicons.presets.angular": false,
+    "files.exclude": {
+        "node_modules/": true,
+        "**/**/*.js": true,
+        "**/**/*.map": true,
+        "old.zushar_v0.2.0/": true,
+        "**/._*": true
+    }
+}
