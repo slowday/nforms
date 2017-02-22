@@ -35,7 +35,7 @@ export class UserModel {
      * @docs:
      *     user module model for dealing with user related data and data manipulation plus storage
     */
-    protected registerUser(user: UserProfile, password: string): Promise<User> {
+    public registerUser(user: UserProfile, password: string): Promise<User> {
         let { email, gender, phone, name, dob } = user;
         
         let formattedDob: Date;
@@ -58,7 +58,7 @@ export class UserModel {
                 return Promise.reject(err);
             });
     }
-    protected authenticateUser(params: AuthData): Promise<User> {
+    public authenticateUser(params: AuthData): Promise<User> {
         let { email, phone, password } = params;
         return db
             .findOne({ email, phone })
@@ -105,7 +105,7 @@ export class UserModel {
                 return Promise.reject(err);
             });
     }
-    protected updateUser(id: string, params: AuthData, updates: any): Promise<updateNotify> {
+    public updateUser(id: string, params: AuthData, updates: any): Promise<updateNotify> {
         /**
          * @docs: 
          *     This method will be used to disable user accounts as well

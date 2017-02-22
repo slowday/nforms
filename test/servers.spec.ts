@@ -3,14 +3,16 @@
  * @docs: testing if zushar-api server is running
 */
 
+import mongoose = require('mongoose');
 import * as chai from 'chai';
 import { userModel } from '../src/users/UserSchema';
 import * as _ from 'lodash';
-import { default as promiseGlobal } from './promises_hack';
 import { UserProfile } from '../src/users/UserModel';
 
-// declare global.Promise to avoid error 
-promiseGlobal();
+if (!global.Promise) {
+    global.Promise = require('es6-promise/auto');
+}
+mongoose.Promise = global.Promise;
 
 import chaiHttp = require('chai-http');
 // add plugin to chai
@@ -24,7 +26,7 @@ describe('Zushar Api Server', function () {
         chai
             .request(`http://127.0.0.1:${port}`)
             .get('/')
-            .end((err, res):void => {
+            .end((err, res) => {
                 chai.expect(err).to.be.null
                 chai.expect(res.status).to.eql(200);
                 chai.expect(res).to.be.json;
@@ -44,9 +46,7 @@ describe('Zushar Api Server', function () {
 
         let newUser = new userModel(SampleUser);
         newUser.validate((err: Error) => {
-            if (err) {
-                throw err;
-            }
+            chai.expect(err).to.be.null;
             chai.expect(_.isNil(err)).to.be.true;
             done();
         });

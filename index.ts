@@ -64,7 +64,6 @@ class ApiServer extends Zushar{
 
 require('dotenv').config(); // added .env content to api
 if (!global.Promise) {
-  global.Promise = require('es6-promise/auto');
+    global.Promise = require('es6-promise/auto');
 }
-(mongoose as any).Promise = global.Promise; // assign mongoose es6Promise as the defacto promise library
 ApiServer.init(<number>(process.env.PORT || 3000));
