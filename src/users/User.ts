@@ -60,35 +60,43 @@ export class User extends my.UserModel{
     
     //#note: request is type any to suppress error about zushar_auth
     private editUser(request: any, response: express.Response, next: express.NextFunction): void {
-        super.updateUser(request.zushar_auth.id, request.body.auth, request.body.updates)
-            .then((update_status) => {
+
+        super.authenticateUser(request.body.auth)
+            .then((user) => {
+                return Promise.resolve({ email: user.email, phone: user.phone });
+            })
+            .then((user) => {
+                return super.updateUser(request.zushar_auth.id, {...user}, request.body.updates);
+            })
+            .then((results) => {
                 response.json({
-                    message: `User ${ (update_status.done) ? `is` : `is not` } updated`,
-                    update_status,
-                    server_timestamp: new Date()
+                    message: `User ${ (results.done) ? `is` : `is not` } updated`,
+                    ...results
                 });
             })
             .catch((err) => {
-                return next(err);
+                next(err);
             });
     }
 
     //#note: request is type any to suppress error about zushar_auth
     protected disableUser(request: any, response: express.Response, next: express.NextFunction): void {
-        super.updateUser(request.zushar_auth.id, 
-            request.body.auth, 
-            {
-                deletion: request.body.deletion
+        super.authenticateUser(request.body.auth)
+            .then((user) => {
+                return Promise.resolve({ email: user.email, phone: user.phone });
             })
-            .then((update_status) => {
+            .then((user) => {
+                return super.updateUser(request.zushar_auth.id, {...user}, {deletion: true});
+            })
+            .then((results) => {
                 response.json({
-                    message: `User ${ (update_status.done) ? `is` : `is not` } deleted`,
-                    update_status,
-                    server_timestamp: new Date()
+                    message: `User ${ (results.done) ? `is` : `is not` } deleted`,
+                    ...results
                 });
             })
             .catch((err) => {
-                return next(err);
+                next(err);
             });
     }
+
 }

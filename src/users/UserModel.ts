@@ -105,54 +105,50 @@ export class UserModel {
                 return Promise.reject(err);
             });
     }
-    public updateUser(id: string, params: AuthData, updates: any): Promise<updateNotify> {
+    public updateUser(id: string, user: any, updates: any): Promise<updateNotify> {
         /**
          * @docs: 
          *     This method will be used to disable user accounts as well
         */
         let updatesCopy = _.assign({}, updates);
-        let { email, phone, password } = params;
         let _id = <mongoose.Types.ObjectId>mongoose.Types.ObjectId(id);
-        
-        // authenticate user first
-        return this.authenticateUser(params)
-            .then((data) => {
-                //#then hash the password if it is part of the updates to be done
-                if (!_.isEmpty(updates.password)) {
-                    updatesCopy = _.assign({}, updatesCopy, {
-                        password: db.setPassword(updates.password)
-                    });
-                }
-                return Promise.resolve(updatesCopy);
-            })
-            .then((data) => {
-                // #then run the update
-                return db.update({ _id, email, phone }, { $set: data },
+
+        if (!_.isEmpty(updates.password)) {
+            updatesCopy = _.assign({}, updatesCopy, {
+                password: db.setPassword(updates.password)
+            });
+        }
+
+        return db.update({ _id, email: user.email, phone: user.phone }, 
+                { 
+                    $set: updatesCopy 
+                },
                 {  
                     safe: true,
                     multi: false,
                     runValidators: true
-                }).exec();
-            })
-            .then((updated) => {
-                if (updated.ok === 1 && updated.nModified === 1) {
-                    return Promise.resolve({
-                        done: true,
-                        timestamp: new Date()
-                    });
-                }
-                else {
-                    return Promise.resolve({
-                        done: false,
-                        timestamp: new Date()
-                    });
-                }
-            })
-            .catch((err: Error) => {
-                // otherwise return error if something goes wrong
-                log.error(err);
-                return Promise.reject(err);
-            });
+                })
+                .exec()
+                .then((updated) => {
+                    if (updated.ok === 1 && updated.nModified === 1) {
+                        return Promise.resolve({
+                            done: true,
+                            timestamp: new Date()
+                        });
+                    }
+                    else {
+                        return Promise.resolve({
+                            done: false,
+                            timestamp: new Date()
+                        });
+                    }
+                })
+                .catch((err: Error) => {
+                    // otherwise return error if something goes wrong
+                    log.error(err);
+                    return Promise.reject(err);
+                });
+
     }
     
     static getOneUser(id: string): Promise<UserProfile> {

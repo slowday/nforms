@@ -18,15 +18,28 @@ let port: number = <number>(process.env.PORT || 3000);
 
 describe('[zushar-api] User Module Model', function () {
     
+
+    let password: string = 'metoyoupassword';
+    let userToken: string = '';
+
     let newUser: UserProfile = <UserProfile>{
         name: 'John Waweru',
         email: 'waweruj00@gmail.com',
         phone: '+254714224735',
         gender: 'male'
     };
-    let password: string = 'metoyoupassword';
-    let userToken: string = '';
-
+    let authData: AuthData = <AuthData>{
+        email: newUser.email,
+        password,
+        phone: newUser.phone
+    };
+    let updates = {
+        email: 'example@domain.net',
+        dob: new Date('1997-9-12'),
+        password: 'qweerttyuuiop'
+    };
+    
+    //#test: Registration
     it('Should add a new user', (done) => {
 
         chai
@@ -47,12 +60,8 @@ describe('[zushar-api] User Module Model', function () {
             });
     });
     
+    //#test: Login    
     it('Should authenticate and login the user', (done) => {
-        let authData: AuthData = <AuthData>{
-            email: newUser.email,
-            password: password,
-            phone: newUser.phone
-        };
 
         chai
             .request(`http://127.0.0.1:${port}`)
@@ -71,6 +80,49 @@ describe('[zushar-api] User Module Model', function () {
             });
     });
 
+    //#test: Edit 
+    it ('Should update a user account', (done) => {
 
+        chai
+            .request(`http://127.0.0.1:${port}`)
+            .put('/user/')
+            .set('Authorization', `Bearer ${userToken}`)
+            .send({
+                auth: authData,
+                updates
+            })
+            .end((err, res) => {
+                chai.expect(err).to.be.null
+                chai.expect(res.status).to.eql(200);
+                chai.expect(res).to.be.json;
+                chai.expect(res.body).to.have.all.keys('message', 'done', 'timestamp');           
+                done();
+            });
+    });
+
+    //#test: remove
+    it('Should disable a user account', (done) => {
+        let authData: AuthData = <AuthData>{
+            email: updates.email,
+            password: updates.password,
+            phone: newUser.phone
+        };
+
+        chai
+            .request(`http://127.0.0.1:${port}`)
+            .del('/user/')
+            .set('Authorization', `Bearer ${userToken}`)
+            .send({
+                auth: authData
+            })
+            .end((err, res) => {
+                chai.expect(err).to.be.null
+                chai.expect(res.status).to.eql(200);
+                chai.expect(res).to.be.json;
+                chai.expect(res.body).to.have.all.keys('message', 'done', 'timestamp');               
+                done();
+            });
+    })
+        
     
 });
