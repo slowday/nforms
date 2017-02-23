@@ -35,7 +35,7 @@ export class UserModel {
      * @docs:
      *     user module model for dealing with user related data and data manipulation plus storage
     */
-    protected registerUser(user: UserProfile, password: string): Promise<User> {
+    public registerUser(user: UserProfile, password: string): Promise<User> {
         let { email, gender, phone, name, dob } = user;
         
         let formattedDob: Date;
@@ -49,16 +49,16 @@ export class UserModel {
         return newUser
             .save()
             .then((data) => {
-               let new_user =  { user: data, jwt_token: data.generateJWT() };
-               delete new_user.user.password; // remove user password
-               return Promise.resolve(new_user);
+                let {_id, name, email, dob, createdAt, phone, gender} = <any>data;
+                let new_user = { _id, name, email, dob, createdAt, phone, gender, jwt_token: data.generateJWT() };
+                return Promise.resolve(new_user);
             })
             .catch((err: Error) => {
                 log.error(err);
                 return Promise.reject(err);
             });
     }
-    protected authenticateUser(params: AuthData): Promise<User> {
+    public authenticateUser(params: AuthData): Promise<User> {
         let { email, phone, password } = params;
         return db
             .findOne({ email, phone })
@@ -95,9 +95,9 @@ export class UserModel {
             })
             .then((data) => {
                 // #then return user
-               let loggedInUser =  { user: data, jwt_token: data.generateJWT() };
-               delete loggedInUser.user.password; // remove user password
-               return Promise.resolve(loggedInUser);
+                let {_id, name, email, dob, createdAt, phone, gender} = <any>data;
+                let new_user = { _id, name, email, dob, createdAt, phone, gender, jwt_token: data.generateJWT() };
+                return Promise.resolve(new_user);
             })
             .catch((err: Error) => {
                 // otherwise return error if something goes wrong
@@ -105,54 +105,50 @@ export class UserModel {
                 return Promise.reject(err);
             });
     }
-    protected updateUser(id: string, params: AuthData, updates: any): Promise<updateNotify> {
+    public updateUser(id: string, user: any, updates: any): Promise<updateNotify> {
         /**
          * @docs: 
          *     This method will be used to disable user accounts as well
         */
         let updatesCopy = _.assign({}, updates);
-        let { email, phone, password } = params;
         let _id = <mongoose.Types.ObjectId>mongoose.Types.ObjectId(id);
-        
-        // authenticate user first
-        return this.authenticateUser(params)
-            .then((data) => {
-                //#then hash the password if it is part of the updates to be done
-                if (!_.isEmpty(updates.password)) {
-                    updatesCopy = _.assign({}, updatesCopy, {
-                        password: db.setPassword(updates.password)
-                    });
-                }
-                return Promise.resolve(updatesCopy);
-            })
-            .then(() => {
-                // #then run the update
-                return db.update({ _id, email, phone }, { $set: updatesCopy },
+
+        if (!_.isEmpty(updates.password)) {
+            updatesCopy = _.assign({}, updatesCopy, {
+                password: db.setPassword(updates.password)
+            });
+        }
+
+        return db.update({ _id, email: user.email, phone: user.phone }, 
+                { 
+                    $set: updatesCopy 
+                },
                 {  
                     safe: true,
                     multi: false,
                     runValidators: true
-                }).exec();
-            })
-            .then((updated) => {
-                if (updated.ok === 1 && updated.nModified === 1) {
-                    return Promise.resolve({
-                        done: true,
-                        timestamp: new Date()
-                    });
-                }
-                else {
-                    return Promise.resolve({
-                        done: false,
-                        timestamp: new Date()
-                    });
-                }
-            })
-            .catch((err: Error) => {
-                // otherwise return error if something goes wrong
-                log.error(err);
-                return Promise.reject(err);
-            });
+                })
+                .exec()
+                .then((updated) => {
+                    if (updated.ok === 1 && updated.nModified === 1) {
+                        return Promise.resolve({
+                            done: true,
+                            timestamp: new Date()
+                        });
+                    }
+                    else {
+                        return Promise.resolve({
+                            done: false,
+                            timestamp: new Date()
+                        });
+                    }
+                })
+                .catch((err: Error) => {
+                    // otherwise return error if something goes wrong
+                    log.error(err);
+                    return Promise.reject(err);
+                });
+
     }
     
     static getOneUser(id: string): Promise<UserProfile> {

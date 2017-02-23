@@ -4,7 +4,7 @@ import { savedForm } from './FormsModel';
 */
 
 import * as mongoose from 'mongoose';
-import * as _ from 'lodash';    
+import * as _ from 'lodash';   
 import { logger as log } from '../logger';
 import { formsModel as db } from './FormsSchema';
 
@@ -34,7 +34,7 @@ export class FormsModel {
     
     protected createForm(newForm: form): Promise<savedForm> {
         let form = new db(newForm);
-        return form.save();
+        return form.save().catch((err: Error) => { log.error(err); return Promise.reject(err) });
     }
     protected getAllForms(): Promise<savedForm[]> {
         // find all forms if user is an author or a contributor
@@ -50,7 +50,7 @@ export class FormsModel {
                 path: 'contributors',
                 select: '_id name gender dob'
             })
-            .exec();
+            .exec().catch((err: Error) => { log.error(err); return Promise.reject(err) })
     }
     protected getOneForm(id: ObjectId, form_user: formUser): Promise<savedForm> {
         // return a form
@@ -66,7 +66,7 @@ export class FormsModel {
                 path: 'contributors',
                 select: '_id name gender'
             })
-            .exec();
+            .exec().catch((err: Error) => { log.error(err); return Promise.reject(err) })
     }
     protected updateForm(id: ObjectId, form_user: formUser, updates: any): Promise<savedForm> {
         // find form if a user is the author or a contributor
@@ -75,7 +75,7 @@ export class FormsModel {
             [form_user.account]: (form_user.account==='author') ?  form_user.account_id : { $in: [form_user.account_id] }
         })
         .exec()
-        .then((data) => {
+        .then((data: any) => {
             for (let key in updates) {
                 data[key] = updates[key]
             }
@@ -184,7 +184,7 @@ export class FormContributors {
                 select: '_id name gender'
             })
             .exec()
-            .then((data) => {
+            .then((data: any) => {
                 return Promise.resolve(data.contributors);
             })
             .catch((err: Error) => {

@@ -13,12 +13,10 @@ export default class Database {
      * @param: connUri: sting -> a connection uri string for mongodb database
     */
     static connect(connUri: string): void {
+        (<any>mongoose).Promise = require('es6-promise').Promise;
         mongoose.connect(connUri, {
             'db': {
                 'native_parse': true
-            },
-            'server': {
-                'poolSize': 20
             }
         });
         Database._connectionEvents();
