@@ -125,9 +125,9 @@ export class UserModel {
                 }
                 return Promise.resolve(updatesCopy);
             })
-            .then(() => {
+            .then((data) => {
                 // #then run the update
-                return db.update({ _id, email, phone }, { $set: updatesCopy },
+                return db.update({ _id, email, phone }, { $set: data },
                 {  
                     safe: true,
                     multi: false,

@@ -2,11 +2,11 @@
  * created by waweru
 */
 
-import * as path from 'path'
-import * as express from 'express'
-import * as logger from 'morgan'
-import * as bodyParser from 'body-parser'
-import * as compression from 'compression'
+import * as path from 'path';
+import * as express from 'express';
+import * as logger from 'morgan';
+import * as bodyParser from 'body-parser';
+import * as compression from 'compression';
 import * as helmet from 'helmet'
 import Database from './database';
 import { logger as log } from './logger';
@@ -21,7 +21,6 @@ export default class Zushar {
     */
     public static app: express.Application;
     constructor() {
-        // set the global promises
         Database.connect( <string>process.env.MONGO_URI ); // connect to the database
         // #Express
         Zushar.app = express(); // init the express app

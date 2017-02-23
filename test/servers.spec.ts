@@ -2,17 +2,13 @@
  * created by waweru
  * @docs: testing if zushar-api server is running
 */
+require('dotenv').config();
+require('es6-promise').polyfill();
 
-import mongoose = require('mongoose');
 import * as chai from 'chai';
 import { userModel } from '../src/users/UserSchema';
 import * as _ from 'lodash';
 import { UserProfile } from '../src/users/UserModel';
-
-if (!global.Promise) {
-    global.Promise = require('es6-promise/auto');
-}
-mongoose.Promise = global.Promise;
 
 import chaiHttp = require('chai-http');
 // add plugin to chai

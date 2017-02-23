@@ -7,6 +7,7 @@
     "test": "test"
   },
   "dependencies": {
+    "bluebird": "^3.4.7",
     "body-parser": "^1.16.1",
     "compression": "^1.6.2",
     "concurrently": "^3.3.0",
@@ -52,9 +53,10 @@
     "tslint-eslint-rules": "^3.4.0"
   },
   "scripts": {
+    "postinstall": "npm run build",
     "test": "mocha --reporter spec --compilers ts:ts-node/register test/**/*.spec.ts",
     "lint": "tslint -c tslint.json './src/**/*.ts' './test/**/*.ts'",
-    "start:dev": "cross-env NODE_ENV=developement npm run build && concurrently \"npm run build:watch\" \"npm run start:dev-server\"",
+    "dev": "cross-env NODE_ENV=developement npm run build && concurrently \"npm run build:watch\" \"npm run start:dev-server\"",
     "build:watch": "tsc -p tsconfig.json -w",
     "build": "tsc -p tsconfig.json",
     "start:dev-server": "nodemon --debug -L",

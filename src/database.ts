@@ -2,8 +2,7 @@
  * created by waweru
 */
 
-import mongoose =  require('mongoose');
-import es6Promise = require('es6-promise');
+import * as mongoose from 'mongoose';
 import { logger as log } from './logger';
 
 export default class Database {
@@ -14,7 +13,7 @@ export default class Database {
      * @param: connUri: sting -> a connection uri string for mongodb database
     */
     static connect(connUri: string): void {
-        mongoose.Promise = global.Promise; // set the default promise library
+        (<any>mongoose).Promise = require('es6-promise').Promise;
         mongoose.connect(connUri, {
             'db': {
                 'native_parse': true

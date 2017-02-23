@@ -5,7 +5,6 @@
 
 import * as http from 'http';
 import * as debug from 'debug';
-import * as mongoose from 'mongoose';
 import Zushar from './src/app';
 import { logger as log } from './src/logger';
 
@@ -63,7 +62,5 @@ class ApiServer extends Zushar{
 }
 
 require('dotenv').config(); // added .env content to api
-if (!global.Promise) {
-    global.Promise = require('es6-promise/auto');
-}
+require('es6-promise').polyfill();
 ApiServer.init(<number>(process.env.PORT || 3000));
