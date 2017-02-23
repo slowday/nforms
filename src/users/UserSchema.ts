@@ -104,7 +104,7 @@ UserSchema.methods.generateJWT = function(): JWT.SignOptions{
         id: this._id,
         createdAt: this.createdAt
     }, 
-    process.env.JWT_SECRET, 
+    'b34435ccc5390ee4c5e24bdb6370a7ccaba016b1', 
     { 
         expiresIn: '2h' 
     });

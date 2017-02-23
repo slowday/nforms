@@ -49,9 +49,9 @@ export class UserModel {
         return newUser
             .save()
             .then((data) => {
-               let new_user =  { user: data, jwt_token: data.generateJWT() };
-               delete new_user.user.password; // remove user password
-               return Promise.resolve(new_user);
+                let {_id, name, email, dob, createdAt, phone, gender} = <any>data;
+                let new_user = { _id, name, email, dob, createdAt, phone, gender, jwt_token: data.generateJWT() };
+                return Promise.resolve(new_user);
             })
             .catch((err: Error) => {
                 log.error(err);
@@ -95,9 +95,9 @@ export class UserModel {
             })
             .then((data) => {
                 // #then return user
-               let loggedInUser =  { user: data, jwt_token: data.generateJWT() };
-               delete loggedInUser.user.password; // remove user password
-               return Promise.resolve(loggedInUser);
+                let {_id, name, email, dob, createdAt, phone, gender} = <any>data;
+                let new_user = { _id, name, email, dob, createdAt, phone, gender, jwt_token: data.generateJWT() };
+                return Promise.resolve(new_user);
             })
             .catch((err: Error) => {
                 // otherwise return error if something goes wrong

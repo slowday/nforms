@@ -35,7 +35,7 @@ export class User extends my.UserModel{
             .then((user) => {
                 response.json({
                     message: 'user created',
-                    user,
+                    user: { ...user }, 
                     server_timestamp: new Date()
                 });
             })
