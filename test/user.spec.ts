@@ -16,7 +16,7 @@ import chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 let port: number = <number>(process.env.PORT || 3000);
 
-describe('[zushar-api] User Module Model', function () {
+describe('[zushar-api] User Module', function () {
     
 
     let password: string = 'metoyoupassword';
