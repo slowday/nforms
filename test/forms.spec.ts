@@ -14,8 +14,12 @@ import chaiHttp = require('chai-http');
 
 describe('[zushar-api] Forms Module', function () {
 
+	before(() => {
+
+	});
+
 	it('Should add a new form', (done) => {
-		
+
 		done();
 	});
 

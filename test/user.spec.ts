@@ -122,7 +122,6 @@ describe('[zushar-api] User Module', function () {
                 chai.expect(res.body).to.have.all.keys('message', 'done', 'timestamp');               
                 done();
             });
-    })
-        
-    
+    });
+
 });
