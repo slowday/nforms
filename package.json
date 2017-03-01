@@ -7,7 +7,6 @@
     "test": "test"
   },
   "dependencies": {
-    "bluebird": "^3.4.7",
     "body-parser": "^1.16.1",
     "compression": "^1.6.2",
     "concurrently": "^3.3.0",
@@ -54,12 +53,12 @@
   },
   "scripts": {
     "postinstall": "npm run build",
-    "test": "mocha --reporter spec --compilers ts:ts-node/register test/**/*.spec.ts",
+    "test": "mocha --reporter spec --compilers ts:ts-node/register test/Index.ts",
     "lint": "tslint -c tslint.json './src/**/*.ts' './test/**/*.ts'",
-    "dev": "cross-env NODE_ENV=developement npm run build && concurrently \"npm run build:watch\" \"npm run start:dev-server\"",
+    "dev": "npm run build && concurrently \"npm run build:watch\" \"npm run dev:server\"",
     "build:watch": "tsc -p tsconfig.json -w",
     "build": "tsc -p tsconfig.json",
-    "start:dev-server": "nodemon --debug -L",
+    "dev:server": "cross-env NODE_ENV=developement nodemon --debug -L",
     "start": "cross-env NODE_ENV=production npm run build && concurrently \"npm run build:watch\" \"node index\""
   },
   "keywords": [],

@@ -7,20 +7,21 @@ import * as crypto from 'crypto';
 import * as JWT from 'jsonwebtoken';
 import { logger as log } from '../logger';
 
-interface IUser extends mongoose.Document {
+export interface IUser extends mongoose.Document{
     name: string;
     email: string;
     phone: string;
     gender: string;
     dob?: Date;
-    //validated: boolean;
-    //validation_code: string;
+    password?: string;
+} 
+interface User extends IUser{
     deletion: boolean;
     password: string;
     generateJWT(): JWT.SignOptions;
     validatePassword (password: string): boolean;
 }
-interface IUserModel extends mongoose.Model<IUser> {
+interface UserModel extends mongoose.Model<User> {
     setPassword(password: string): string;
 }
 
@@ -56,21 +57,6 @@ let UserSchema: mongoose.Schema = new mongoose.Schema({
     dob: {
         type: Date
     },
-    
-/*    
-    // code below will be uncommented once email and phone verification for users is implemented
-
-    verified: {
-        type: Boolean,
-        default: false
-    },
-    verification_code: {
-        type: String,
-        unique: true,
-        required: true,
-        default: crypto.randomBytes(4).toString('hex')
-    },
-*/
     deletion: {
         type: Boolean,
         default: false
@@ -104,11 +90,11 @@ UserSchema.methods.generateJWT = function(): JWT.SignOptions{
         id: this._id,
         createdAt: this.createdAt
     }, 
-    'b34435ccc5390ee4c5e24bdb6370a7ccaba016b1', 
+    (process.env.JWT_TOKEN || '12814de572bd6abbb83c3666'), 
     { 
         expiresIn: '2h' 
     });
 };
 
 // compile schema and export
-export let userModel = <IUserModel>mongoose.model('users', UserSchema);
+export let userModel = <UserModel>mongoose.model('users', UserSchema);

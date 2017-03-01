@@ -6,18 +6,16 @@ import * as express from 'express';
 import * as _ from 'lodash';
 import Auth from '../auth';
 import { 
-    FormsModel, 
+    Forms, 
     FormContributors,
     formUser
 } from './FormsModel';
 
-export class Form extends FormsModel{
+export class Form{
     
     public router: express.Router = express.Router();
 
     public constructor() {
-        super();
-
         //#test route
         this.router.get('/test', (request: express.Request, response: express.Response, next: express.NextFunction) => {
             response.json({
@@ -28,32 +26,34 @@ export class Form extends FormsModel{
         })
         //#contributors endpoints
         let miniRouter: express.Router = express.Router();
-        miniRouter.post('/:form_id', this._addContributor);
-        miniRouter.get('/:form_id', this._getContributors);
-        miniRouter.delete('/:form_id', this._removeContributor);
+        miniRouter.post('/:id', this._addContributor);
+        miniRouter.get('/:id', this._getContributors);
+        miniRouter.delete('/:id', this._removeContributor);
 
         //#install routes
         this.router.use(Auth.authJWT, Auth.getLoggedInUser);
-        this.router.use('/contributor', miniRouter);
         this.router.post('/', this._createForm);
         this.router.get('/', this._getAllForms);
-        this.router.get('/form_id/:form_user_type', this._getOneForm);
-        this.router.put('/form_id/:form_user_type', this._updateForm);
-        this.router.delete('/form_id/:form_user_type', this._removeForm);
+        this.router.get('/:id', this._getOneForm);
+        this.router.put('/:id', this._updateForm);
+        this.router.delete('/:id', this._removeForm);
+        this.router.use('/contributors', miniRouter);
     }
 
     private _createForm(request: any, response: express.Response, next: express.NextFunction): void {
-        /* *
-         * @body: form<Object>
-        */
-        super.createForm(
+        //@body: form<Object>
+        Forms.create(
             _.assign({}, request.body.form, {
                 author: request.zushar_auth.id,
                 contributors: []
             })
         )
         .then((data) => {
-            response.json(data);
+            response.json({
+                message: `${data.name} is created successfully`,
+                timestamp: new Date().toDateString(),
+                form: data
+            });
         })
         .catch((err: Error) => {
             next(err);
@@ -61,10 +61,14 @@ export class Form extends FormsModel{
     }
 
     private _getAllForms(request: any, response: express.Response, next: express.NextFunction): void {
-        super
-        .getAllForms()
+        Forms
+        .getAll()
         .then((data)=>{
-            response.json(data);
+            response.json({
+                message: `${data.length} forms retrieved`,
+                timestamp: new Date().toDateString(),
+                forms: data
+            });
         })
         .catch((err: Error) => {
             next(err);
@@ -72,21 +76,32 @@ export class Form extends FormsModel{
     }
 
     private _getOneForm(request: any, response: express.Response, next: express.NextFunction): void {
-        /* *
-         * @param: form_id, form_user_type
-        */
-
-        // implement the form user validation data structure
+        //@param: id
+        //@query: user_type
         let form_auth: formUser = {
             account_id: request.zushar_auth.id,
-            account: request.params.form_user_type
+            account: <string>request.query.user_type
         };
-        super.getOneForm(
-            request.params.form_id,
+
+        Forms.getOne(
+            request.params.id,
             form_auth
         )
         .then((data)=>{
-            response.json(data);
+            if (!_.isNull(data)) {
+                response.json({
+                    message: `${data.name} is retrieved`,
+                    timestamp: new Date().toDateString(),
+                    form: data
+                });
+            }
+            else {
+                response.json({
+                    message: `Could not retrieve requested form`,
+                    timestamp: new Date().toDateString(),
+                    form: null
+                });
+            }
         })
         .catch((err: Error) => {
             next(err);
@@ -94,23 +109,24 @@ export class Form extends FormsModel{
     }
 
     private _updateForm(request: any, response: express.Response, next: express.NextFunction): void {
-        /* *
-         * @param: form_id, form_user_type
-         * @body: updates<Object>
-        */
-
-        // implement the form user validation data structure
+        //@param: id
+        //@query: user_type
+        //@body: updates<Object>
         let form_auth: formUser = {
             account_id: request.zushar_auth.id,
-            account: request.params.form_user_type
+            account: request.query.user_type
         };
-        super.updateForm(
-            request.params.form_id, 
+        Forms.update(
+            request.params.id, 
             form_auth,
             request.body.updates
         )
         .then((data)=>{
-            response.json(data);
+            response.json({
+                message: `${data.name} is retrieved`,
+                timestamp: new Date().toDateString(),
+                form: data
+            });
         })
         .catch((err: Error) => {
             next(err);
@@ -118,15 +134,17 @@ export class Form extends FormsModel{
     }
 
     private _removeForm(request: any, response: express.Response, next: express.NextFunction): void {
-        /* *
-         * @param: form_id, form_user_type
-        */
-        super.deleteForm(
-            request.params.form_id, 
+        //@param: id
+        Forms.remove(
+            request.params.id, 
             request.zushar_auth.id
         )
         .then((data)=>{
-            response.json(data);
+            response.json({
+                message: `form deleted`,
+                timestamp: new Date().toDateString(),
+                data
+            });
         })
         .catch((err: Error) => {
             next(err);
@@ -134,17 +152,19 @@ export class Form extends FormsModel{
     }
 
     private _addContributor(request: any, response: express.Response, next: express.NextFunction): void {
-        /* *
-         * @param: form_id
-         * @body: payload
-        */
-        FormContributors.addContributor(
-            request.params.form_id,
+        //@param: form_id
+        //@body: payload
+        FormContributors.add(
+            request.params.id,
             request.zushar_auth.id,
-            request.body.payload
+            request.body.contributor
         )
         .then((data)=>{
-            response.json(data);
+            response.json({
+                message: `Contributors list had an addition`,
+                timestamp: new Date().toDateString(),
+                contributors: data
+            });
         })
         .catch((err: Error) => {
             next(err);
@@ -155,11 +175,15 @@ export class Form extends FormsModel{
         /* *
          * @param: form_id
         */
-        FormContributors.getContributors(
-            request.params.form_id
+        FormContributors.getAll(
+            request.params.id
         )
         .then((data)=>{
-            response.json(data);
+            response.json({
+                message: `retrieved ${data.length} contributors`,
+                timestamp: new Date().toDateString(),
+                contributors: data
+            });
         })
         .catch((err: Error) => {
             next(err);
@@ -167,17 +191,19 @@ export class Form extends FormsModel{
     }
 
     private _removeContributor(request: any, response: express.Response, next: express.NextFunction): void {
-        /* *
-         * @param: form_id, form_user_type
-         * @body: contributor
-        */
-        FormContributors.removeContributor(
-            request.params.form_id,
+        //@param: id
+        //@body: contributor
+        FormContributors.remove(
+            request.params.id,
             request.zushar_auth.id,
             request.body.contributor
         )
         .then((data)=>{
-            response.json(data);
+            response.json({
+                message: `contributor list shrinked`,
+                timestamp: new Date().toDateString(),
+                contributors: data
+            });
         })
         .catch((err: Error) => {
             next(err);

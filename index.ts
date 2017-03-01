@@ -56,7 +56,7 @@ class ApiServer extends Zushar{
         let addr = ApiServer._server.address();
         let bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr.port}`;
         debug(`Listening on ${bind}`);
-        // log
+        //# log
         log.info(`zushar-api server running on port ${addr.port}`);
     }
 }

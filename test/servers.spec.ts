@@ -6,10 +6,8 @@ require('dotenv').config();
 require('es6-promise').polyfill();
 
 import * as chai from 'chai';
-import { userModel } from '../src/users/UserSchema';
+import { userModel, IUser } from '../src/users/UserSchema';
 import * as _ from 'lodash';
-import { UserProfile } from '../src/users/UserModel';
-
 import chaiHttp = require('chai-http');
 // add plugin to chai
 chai.use(chaiHttp);
@@ -32,7 +30,7 @@ describe('Zushar Api Server', function () {
     });
 
     it('Should ensure database is functioning correctly', function (done) {
-        let SampleUser: UserProfile = <UserProfile>{
+        let SampleUser: IUser = <IUser>{
             name: 'John Waweru',
             email: 'waweruj00@gmail.com',
             phone: '+254714224735',

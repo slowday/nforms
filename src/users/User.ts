@@ -3,19 +3,17 @@
 */
 
 import * as express from 'express';
-import * as my from './UserModel';
+import * as UserModel from './UserModel';
 import Auth from '../auth';
 
 /**
  * @class: User 
  * @docs: Main class for user module
 */
-export class User extends my.UserModel{
+export class User{
     public router: express.Router = express.Router();
 
-    public constructor() {
-        super();
-        
+    public constructor() {        
         this.router.get('/', 
             (request: any, response: express.Response, next: express.NextFunction) => {
                 response.json({
@@ -24,14 +22,14 @@ export class User extends my.UserModel{
                     timestamp: new Date().toDateString()
                 });
             });
-        this.router.post('/', this.createUser);
-        this.router.post('/login', this.loginUser);
-        this.router.put('/', Auth.authJWT, Auth.getLoggedInUser, this.editUser);
-        this.router.delete('/', Auth.authJWT, Auth.getLoggedInUser, this.disableUser);
+        this.router.post('/', this._createUser);
+        this.router.post('/login', this._authenticateUser);
+        this.router.put('/', Auth.authJWT, Auth.getLoggedInUser, this._updateUser);
+        this.router.delete('/', Auth.authJWT, Auth.getLoggedInUser, this._disableUser);
     }
 
-    private createUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        super.registerUser(request.body.user_details, request.body.password)
+    private _createUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
+        UserModel.registerUser(request.body.user_details, request.body.password)
             .then((user) => {
                 response.json({
                     message: 'user created',
@@ -44,8 +42,8 @@ export class User extends my.UserModel{
             });
     }
 
-    private loginUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        super.authenticateUser(request.body.auth)
+    private _authenticateUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
+        UserModel.authenticateUser(request.body.auth)
             .then((user) => {
                 response.json({
                     message: 'user logged-in',
@@ -59,15 +57,8 @@ export class User extends my.UserModel{
     }
     
     //#note: request is type any to suppress error about zushar_auth
-    private editUser(request: any, response: express.Response, next: express.NextFunction): void {
-
-        super.authenticateUser(request.body.auth)
-            .then((user) => {
-                return Promise.resolve({ email: user.email, phone: user.phone });
-            })
-            .then((user) => {
-                return super.updateUser(request.zushar_auth.id, {...user}, request.body.updates);
-            })
+    private _updateUser(request: any, response: express.Response, next: express.NextFunction): void {
+        UserModel.updateUser(request.zushar_auth.id, request.body.auth, request.body.updates)
             .then((results) => {
                 response.json({
                     message: `User ${ (results.done) ? `is` : `is not` } updated`,
@@ -80,17 +71,11 @@ export class User extends my.UserModel{
     }
 
     //#note: request is type any to suppress error about zushar_auth
-    protected disableUser(request: any, response: express.Response, next: express.NextFunction): void {
-        super.authenticateUser(request.body.auth)
-            .then((user) => {
-                return Promise.resolve({ email: user.email, phone: user.phone });
-            })
-            .then((user) => {
-                return super.updateUser(request.zushar_auth.id, {...user}, {deletion: true});
-            })
+    protected _disableUser(request: any, response: express.Response, next: express.NextFunction): void {
+        UserModel.updateUser(request.zushar_auth.id, request.body.auth, { deletion: true })
             .then((results) => {
                 response.json({
-                    message: `User ${ (results.done) ? `is` : `is not` } deleted`,
+                    message: `User ${ (results.done) ? `is` : `is not` } updated`,
                     ...results
                 });
             })
