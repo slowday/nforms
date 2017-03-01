@@ -51,7 +51,7 @@ let FormsSchema: mongoose.Schema = new mongoose.Schema({
     timestamps: true
 }); 
 
-interface IFormsModel extends mongoose.Document{
+export interface IFormsModel extends mongoose.Document{
     name: string
     form_state: string
     author: mongoose.Schema.Types.ObjectId | string;

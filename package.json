@@ -56,10 +56,10 @@
     "postinstall": "npm run build",
     "test": "mocha --reporter spec --compilers ts:ts-node/register test/**/*.spec.ts",
     "lint": "tslint -c tslint.json './src/**/*.ts' './test/**/*.ts'",
-    "dev": "cross-env NODE_ENV=developement npm run build && concurrently \"npm run build:watch\" \"npm run start:dev-server\"",
+    "dev": "npm run build && concurrently \"npm run build:watch\" \"npm run dev:server\"",
     "build:watch": "tsc -p tsconfig.json -w",
     "build": "tsc -p tsconfig.json",
-    "start:dev-server": "nodemon --debug -L",
+    "dev:server": "cross-env NODE_ENV=developement nodemon --debug -L",
     "start": "cross-env NODE_ENV=production npm run build && concurrently \"npm run build:watch\" \"node index\""
   },
   "keywords": [],

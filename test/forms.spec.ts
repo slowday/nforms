@@ -7,9 +7,7 @@ require('dotenv').config();
 require('es6-promise').polyfill();
 
 import * as chai from 'chai';
-import { userModel } from '../src/users/UserSchema';
 import * as _ from 'lodash';
-import { UserProfile, UserModel, AuthData } from '../src/users/UserModel';
 import chaiHttp = require('chai-http');
 
 describe('[zushar-api] Forms Module', function () {

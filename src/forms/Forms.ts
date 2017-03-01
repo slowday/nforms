@@ -6,18 +6,16 @@ import * as express from 'express';
 import * as _ from 'lodash';
 import Auth from '../auth';
 import { 
-    FormsModel, 
+    Forms, 
     FormContributors,
     formUser
 } from './FormsModel';
 
-export class Form extends FormsModel{
+export class Form{
     
     public router: express.Router = express.Router();
 
     public constructor() {
-        super();
-
         //#test route
         this.router.get('/test', (request: express.Request, response: express.Response, next: express.NextFunction) => {
             response.json({
@@ -46,7 +44,7 @@ export class Form extends FormsModel{
         /* *
          * @body: form<Object>
         */
-        super.createForm(
+        Forms.create(
             _.assign({}, request.body.form, {
                 author: request.zushar_auth.id,
                 contributors: []
@@ -61,8 +59,8 @@ export class Form extends FormsModel{
     }
 
     private _getAllForms(request: any, response: express.Response, next: express.NextFunction): void {
-        super
-        .getAllForms()
+        Forms
+        .getAll()
         .then((data)=>{
             response.json(data);
         })
@@ -81,7 +79,7 @@ export class Form extends FormsModel{
             account_id: request.zushar_auth.id,
             account: request.params.form_user_type
         };
-        super.getOneForm(
+        Forms.getOne(
             request.params.form_id,
             form_auth
         )
@@ -104,7 +102,7 @@ export class Form extends FormsModel{
             account_id: request.zushar_auth.id,
             account: request.params.form_user_type
         };
-        super.updateForm(
+        Forms.update(
             request.params.form_id, 
             form_auth,
             request.body.updates
@@ -121,7 +119,7 @@ export class Form extends FormsModel{
         /* *
          * @param: form_id, form_user_type
         */
-        super.deleteForm(
+        Forms.remove(
             request.params.form_id, 
             request.zushar_auth.id
         )
@@ -138,7 +136,7 @@ export class Form extends FormsModel{
          * @param: form_id
          * @body: payload
         */
-        FormContributors.addContributor(
+        FormContributors.add(
             request.params.form_id,
             request.zushar_auth.id,
             request.body.payload
@@ -155,7 +153,7 @@ export class Form extends FormsModel{
         /* *
          * @param: form_id
         */
-        FormContributors.getContributors(
+        FormContributors.getAll(
             request.params.form_id
         )
         .then((data)=>{
@@ -171,7 +169,7 @@ export class Form extends FormsModel{
          * @param: form_id, form_user_type
          * @body: contributor
         */
-        FormContributors.removeContributor(
+        FormContributors.remove(
             request.params.form_id,
             request.zushar_auth.id,
             request.body.contributor

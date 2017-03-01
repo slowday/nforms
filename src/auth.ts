@@ -9,15 +9,16 @@ import * as expressJWT from 'express-jwt';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { logger as log } from './logger';
-import { UserProfile, UserModel } from './users/UserModel';
+import { IUser } from './users/UserSchema';
+import { getOneUser as getUser } from './users/UserModel';
 
-export default class Auth extends UserModel {
+export default class Auth {
     /**
      * @docs: 
      *     This is a static class whose domain is authentication and authorization
     */
     static authJWT = expressJWT({
-      secret : 'b34435ccc5390ee4c5e24bdb6370a7ccaba016b1',
+      secret : process.env.JWT_TOKEN || '12814de572bd6abbb83c3666',
       userProperty : 'zushar_auth'
     });
 
@@ -28,9 +29,10 @@ export default class Auth extends UserModel {
             request.zushar_auth.isLoggedin = false;
             next();
         }
-
-        super.getOneUser(request.zushar_auth.id)
-            .then((data: UserProfile) => {
+        
+        //# Get User Details
+        getUser(request.zushar_auth.id)
+            .then((data: IUser) => {
                 let age = null;
                 request.zushar_auth.isLoggedin = true;
                 if (!_.isEmpty(data.dob)) {
@@ -39,7 +41,7 @@ export default class Auth extends UserModel {
                     age = now.diff(dob, 'years', true);
                 }
                 //  add user data to request object
-                request.zushar_auth.user_data = {
+                request.zushar_user = {
                     email: data.email,
                     gender: data.gender,
                     phone: data.phone,

@@ -7,9 +7,9 @@ require('dotenv').config();
 require('es6-promise').polyfill();
 
 import * as chai from 'chai';
-import { userModel } from '../src/users/UserSchema';
+import { userModel, IUser } from '../src/users/UserSchema';
 import * as _ from 'lodash';
-import { UserProfile, UserModel, AuthData } from '../src/users/UserModel';
+import { AuthData } from '../src/users/UserModel';
 
 import chaiHttp = require('chai-http');
 // add plugin to chai
@@ -22,7 +22,7 @@ describe('[zushar-api] User Module', function () {
     let password: string = 'metoyoupassword';
     let userToken: string = '';
 
-    let newUser: UserProfile = <UserProfile>{
+    let newUser: IUser = <IUser>{
         name: 'John Waweru',
         email: 'waweruj00@gmail.com',
         phone: '+254714224735',
