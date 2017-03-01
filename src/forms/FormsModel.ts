@@ -162,6 +162,11 @@ export namespace FormContributors {
             data.contributors = <ObjectId[]>[].concat(newContributors);
             return data.save();
         })
+        .then(
+            (data) => {
+                return Promise.resolve(data.contributors);
+            }
+        )
         .catch((err: Error) => {
             // otherwise return error if something goes wrong
             log.error(err);
@@ -177,17 +182,17 @@ export namespace FormContributors {
         })
         .populate({
             path: 'author',
-            select: '_id name gender'
+            select: '_id email name gender'
         })
         .populate({
             path: 'contributors',
-            select: '_id name gender'
+            select: '_id email name gender'
         })
         .exec()
-        .then((data: any) => {
+        .then((data) => {
             return Promise.resolve(data.contributors);
         })
-        .catch((err: Error) => {
+        .catch((err) => {
             // otherwise return error if something goes wrong
             log.error(err);
             return Promise.reject(err);
@@ -213,7 +218,12 @@ export namespace FormContributors {
             data.contributors.remove(contributor);
             return data.save();
         })
-        .catch((err: Error) => {
+        .then(
+            (data) => {
+                return Promise.resolve(data.contributors);
+            }
+        )
+        .catch((err) => {
             // otherwise return error if something goes wrong
             log.error(err);
             return Promise.reject(err);

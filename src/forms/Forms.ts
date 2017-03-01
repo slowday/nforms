@@ -37,13 +37,11 @@ export class Form{
         this.router.get('/:id', this._getOneForm);
         this.router.put('/:id', this._updateForm);
         this.router.delete('/:id', this._removeForm);
-        this.router.use('/contributor', miniRouter);
+        this.router.use('/contributors', miniRouter);
     }
 
     private _createForm(request: any, response: express.Response, next: express.NextFunction): void {
-        /* *
-         * @body: form<Object>
-        */
+        //@body: form<Object>
         Forms.create(
             _.assign({}, request.body.form, {
                 author: request.zushar_auth.id,
@@ -78,9 +76,8 @@ export class Form{
     }
 
     private _getOneForm(request: any, response: express.Response, next: express.NextFunction): void {
-        //@param: form_id, form_user_type
-
-        // implement the form user validation data structure
+        //@param: id
+        //@query: user_type
         let form_auth: formUser = {
             account_id: request.zushar_auth.id,
             account: <string>request.query.user_type
@@ -112,12 +109,9 @@ export class Form{
     }
 
     private _updateForm(request: any, response: express.Response, next: express.NextFunction): void {
-        /* *
-         * @param: form_id, form_user_type
-         * @body: updates<Object>
-        */
-
-        // implement the form user validation data structure
+        //@param: id
+        //@query: user_type
+        //@body: updates<Object>
         let form_auth: formUser = {
             account_id: request.zushar_auth.id,
             account: request.query.user_type
@@ -140,15 +134,17 @@ export class Form{
     }
 
     private _removeForm(request: any, response: express.Response, next: express.NextFunction): void {
-        /* *
-         * @param: form_id, form_user_type
-        */
+        //@param: id
         Forms.remove(
             request.params.id, 
             request.zushar_auth.id
         )
         .then((data)=>{
-            response.json(data);
+            response.json({
+                message: `form deleted`,
+                timestamp: new Date().toDateString(),
+                data
+            });
         })
         .catch((err: Error) => {
             next(err);
@@ -156,17 +152,19 @@ export class Form{
     }
 
     private _addContributor(request: any, response: express.Response, next: express.NextFunction): void {
-        /* *
-         * @param: form_id
-         * @body: payload
-        */
+        //@param: form_id
+        //@body: payload
         FormContributors.add(
             request.params.id,
             request.zushar_auth.id,
-            request.body.payload
+            request.body.contributor
         )
         .then((data)=>{
-            response.json(data);
+            response.json({
+                message: `Contributors list had an addition`,
+                timestamp: new Date().toDateString(),
+                contributors: data
+            });
         })
         .catch((err: Error) => {
             next(err);
@@ -181,7 +179,11 @@ export class Form{
             request.params.id
         )
         .then((data)=>{
-            response.json(data);
+            response.json({
+                message: `retrieved ${data.length} contributors`,
+                timestamp: new Date().toDateString(),
+                contributors: data
+            });
         })
         .catch((err: Error) => {
             next(err);
@@ -199,7 +201,11 @@ export class Form{
             request.body.contributor
         )
         .then((data)=>{
-            response.json(data);
+            response.json({
+                message: `contributor list shrinked`,
+                timestamp: new Date().toDateString(),
+                contributors: data
+            });
         })
         .catch((err: Error) => {
             next(err);

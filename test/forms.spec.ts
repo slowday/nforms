@@ -138,7 +138,7 @@ describe('[zushar-api] Forms Module', function () {
 						}
 					}
 				],
-				contributors: [contributor_id],
+				name: '[Edited] Sample Form',
 				form_state: 'ready'
 			}
 		})
@@ -154,19 +154,72 @@ describe('[zushar-api] Forms Module', function () {
 	});
 
 	it('Should disable a form', (done) => {
-		done();
+		chai
+		.request(`http://127.0.0.1:${port}`)
+		.del(`/forms/${createdForm._id}`)
+		.set('Authorization', `Bearer ${user_as_author_token}`)
+		.end((err, res) => {
+			chai.expect(err).to.be.null
+            chai.expect(res.status).to.eql(200);
+            chai.expect(res).to.be.json;
+			chai.expect(res.body).to.have.all.keys('message', 'timestamp', 'data');
+			chai.expect(res.body.data).to.have.all.keys('done', 'timestamp');
+			done();
+		});
 	});
 
 	it('Should add a new contributor', (done) => {
-		done();
+		chai
+		.request(`http://127.0.0.1:${port}`)
+		.post(`/forms/contributors/${createdForm._id}`)
+		.set('Authorization', `Bearer ${user_as_author_token}`)
+		.send({
+			contributor: contributor_id
+		})
+		.end((err, res) => {
+			chai.expect(err).to.be.null
+            chai.expect(res.status).to.eql(200);
+            chai.expect(res).to.be.json;
+			chai.expect(res.body).to.have.all.keys('message', 'timestamp', 'contributors');
+			chai.expect(res.body.contributors).to.be.an('array');
+			chai.expect(res.body.contributors.length).to.eql(1);
+			done();
+		});
 	});
 
 	it('Shoudl get all contributors', (done) => {
-		done();
+		chai
+		.request(`http://127.0.0.1:${port}`)
+		.get(`/forms/contributors/${createdForm._id}`)
+		.set('Authorization', `Bearer ${user_as_author_token}`)
+		.end((err, res) => {
+			chai.expect(err).to.be.null
+            chai.expect(res.status).to.eql(200);
+            chai.expect(res).to.be.json;
+			chai.expect(res.body).to.have.all.keys('message', 'timestamp', 'contributors');
+			chai.expect(res.body.contributors).to.be.an('array');
+			chai.expect(res.body.contributors.length).to.eql(1);
+			done();
+		});
 	});
 
 	it('Should remove a contributor', (done) => {
-		done();
+		chai
+		.request(`http://127.0.0.1:${port}`)
+		.del(`/forms/contributors/${createdForm._id}`)
+		.set('Authorization', `Bearer ${user_as_author_token}`)
+		.send({
+			contributor: contributor_id
+		})
+		.end((err, res) => {
+			chai.expect(err).to.be.null
+            chai.expect(res.status).to.eql(200);
+            chai.expect(res).to.be.json;
+			chai.expect(res.body).to.have.all.keys('message', 'timestamp', 'contributors');
+			chai.expect(res.body.contributors).to.be.an('array');
+			chai.expect(res.body.contributors.length).to.eql(0);
+			done();
+		});
 	});
 
 });
