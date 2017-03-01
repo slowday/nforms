@@ -7,7 +7,6 @@
     "test": "test"
   },
   "dependencies": {
-    "bluebird": "^3.4.7",
     "body-parser": "^1.16.1",
     "compression": "^1.6.2",
     "concurrently": "^3.3.0",
