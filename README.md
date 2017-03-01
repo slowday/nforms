@@ -1,8 +1,26 @@
 # zushar-api #
-
+[ ![Codeship Status for trendy_weshy/sibasi-health](https://app.codeship.com/projects/e803d190-e01a-0134-31eb-46050fed2f07/status?branch=master)](https://app.codeship.com/projects/205150)
 > a RESTful web resource for zushar form builder web tool.
 
 ## How to install ##
 
-1.`git clone` the prject
-2.create a .env file and add PORT, MONGO_URI and JWT_SECRET environment variables
+1.clone the project [zushar api](https://github.com/trendy-weshy/zushar-api.git)
+2.create a .env file and add MONGO_URI and JWT_SECRET environment variables
+3.run `npm install` on the terminal
+4.run `npm run build` on the terminal to create build of the project files
+5.run `node index.js` on the terminal to start the server
+
+## How to test ##
+
+After a successful installation of the api. For insurance purposes:
+1. run `npm install -g mocha typescript tslint ts-node` _this step is not necessary but is a good insurance that running api will be successful_ 
+then:
+2. run `node index.js` on the terminal 
+on another terminal window
+3. run `npm test`
+
+**note**: for now you will have to clear database contents after the test run I have not yet implemented a clean-up
+strategy for after the tests run.
+
+## License ##
+MIT
