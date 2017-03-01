@@ -11,3 +11,4 @@ test/**/*.map
 npm-debug.log
 npm-debug.log.**
 logs/**/*.log
+debug.log
