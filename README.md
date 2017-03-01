@@ -21,5 +21,7 @@ After a successful installation of the api. For insurance purposes:
 **note**: for now you will have to clear database contents after the test run I have not yet implemented a clean-up
 strategy for after the tests run.
 
+## Changelog ##
+check [release notes](https://github.com/trendy-weshy/zushar-api/releases)
 ## License ##
 MIT
