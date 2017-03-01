@@ -191,10 +191,8 @@ export class Form{
     }
 
     private _removeContributor(request: any, response: express.Response, next: express.NextFunction): void {
-        /* *
-         * @param: form_id, form_user_type
-         * @body: contributor
-        */
+        //@param: id
+        //@body: contributor
         FormContributors.remove(
             request.params.id,
             request.zushar_auth.id,
