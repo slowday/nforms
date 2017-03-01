@@ -4,20 +4,19 @@
 
 ## How to install ##
 
-1.clone the project [zushar api](https://github.com/trendy-weshy/zushar-api.git)
-2.create a .env file and add MONGO_URI and JWT_SECRET environment variables
-3.run `npm install` on the terminal
-4.run `npm run build` on the terminal to create build of the project files
-5.run `node index.js` on the terminal to start the server
+- clone the project [zushar api](https://github.com/trendy-weshy/zushar-api.git)
+- create a .env file and add MONGO_URI and JWT_TOKEN environment variables
+- run `npm install` on the terminal
+- run `npm run build` on the terminal to create build of the project files
+- run `node index.js` on the terminal to start the server
 
 ## How to test ##
 
 After a successful installation of the api. For insurance purposes:
-1. run `npm install -g mocha typescript tslint ts-node` _this step is not necessary but is a good insurance that running api will be successful_ 
-then:
-2. run `node index.js` on the terminal 
-on another terminal window
-3. run `npm test`
+
+- run `npm install -g mocha typescript tslint ts-node` _this step is not necessary but is a good insurance that running api will be successful_
+- run `node index.js` on the terminal
+- run `npm test`
 
 **note**: for now you will have to clear database contents after the test run I have not yet implemented a clean-up
 strategy for after the tests run.

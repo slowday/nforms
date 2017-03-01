@@ -59,7 +59,7 @@
     "build:watch": "tsc -p tsconfig.json -w",
     "build": "tsc -p tsconfig.json",
     "dev:server": "cross-env NODE_ENV=developement nodemon --debug -L",
-    "start": "cross-env NODE_ENV=production npm run build && concurrently \"npm run build:watch\" \"node index\""
+    "start": "npm run build && concurrently \"npm run build:watch\" \"cross-env NODE_ENV=production node index\""
   },
   "keywords": [],
   "author": "john waweru<wambugu.john.waweru@outlook.com>",
