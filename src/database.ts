@@ -19,6 +19,7 @@ export default class Database {
                 'native_parse': true
             }
         });
+        mongoose.set('debug', (process.env.NODE_ENV==='development'))
         Database._connectionEvents();
     }
 
