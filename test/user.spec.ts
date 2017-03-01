@@ -7,9 +7,10 @@ require('dotenv').config();
 require('es6-promise').polyfill();
 
 import * as chai from 'chai';
-import { userModel, IUser } from '../src/users/UserSchema';
+import * as mongoose from 'mongoose';
 import * as _ from 'lodash';
 import { AuthData } from '../src/users/UserModel';
+import { authData, newUser, password, updates} from './details';
 
 import chaiHttp = require('chai-http');
 // add plugin to chai
@@ -18,27 +19,8 @@ let port: number = <number>(process.env.PORT || 3000);
 
 describe('[zushar-api] User Module', function () {
     
+    let userToken: string; // authentication token details
 
-    let password: string = 'metoyoupassword';
-    let userToken: string = '';
-
-    let newUser: IUser = <IUser>{
-        name: 'John Waweru',
-        email: 'waweruj00@gmail.com',
-        phone: '+254714224735',
-        gender: 'male'
-    };
-    let authData: AuthData = <AuthData>{
-        email: newUser.email,
-        password,
-        phone: newUser.phone
-    };
-    let updates = {
-        email: 'example@domain.net',
-        dob: new Date('1997-9-12'),
-        password: 'qweerttyuuiop'
-    };
-    
     //#test: Registration
     it('Should add a new user', (done) => {
 
@@ -59,7 +41,7 @@ describe('[zushar-api] User Module', function () {
                 done();
             });
     });
-    
+
     //#test: Login    
     it('Should authenticate and login the user', (done) => {
 

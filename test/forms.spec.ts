@@ -9,11 +9,14 @@ require('es6-promise').polyfill();
 import * as chai from 'chai';
 import * as _ from 'lodash';
 import chaiHttp = require('chai-http');
+import { AuthData } from '../src/users/UserModel';
+import { authData, newUser, password, updates} from './details';
+
 
 describe('[zushar-api] Forms Module', function () {
 
 	before(() => {
-
+		//# login user
 	});
 
 	it('Should add a new form', (done) => {
