@@ -10,17 +10,48 @@ import * as chai from 'chai';
 import * as _ from 'lodash';
 import chaiHttp = require('chai-http');
 import { AuthData } from '../src/users/UserModel';
-import { authData, newUser, password, updates} from './details';
+import { authorAuthData, authorUser, password, contributorUser, contributorAuthData } from './details';
 
+// add plugin to chai
+chai.use(chaiHttp);
+let port: number = <number>(process.env.PORT || 3000);
 
 describe('[zushar-api] Forms Module', function () {
+	
+	let user_as_contributor_token: string;
+	let user_as_author_token: string;
 
-	before(() => {
-		//# login user
+	before('Before all create a new user and log them in', (done) => {
+		//# create new user (to act as a contributor)
+		chai
+		.request(`http://127.0.0.1:${port}`)
+		.post('/user/')
+		.send({ 
+			user_details: contributorUser, 
+			password 
+		})
+		.end((err, res) => {
+			user_as_contributor_token = res.body.user.jwt_token;
+			done();
+		});
+
+	});
+
+	beforeEach('Logging a user', (done) => {
+		//# login a user to store token
+		chai
+		.request(`http://127.0.0.1:${port}`)
+		.post('/user/login')
+		.send({ 
+			auth: authorAuthData
+		})
+		.end((err, res) => {
+			user_as_author_token = res.body.user.jwt_token;
+			done();
+		});
 	});
 
 	it('Should add a new form', (done) => {
-
 		done();
 	});
 

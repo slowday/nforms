@@ -2,20 +2,25 @@ import { IUser } from '../src/users/UserSchema';
 import { AuthData } from '../src/users/UserModel';
 
 export let password: string = 'metoyoupassword';
-export let newUser: IUser = <IUser>{
+export let authorUser: IUser = <IUser>{
     name: 'John Waweru',
     email: 'waweruj00@gmail.com',
-    phone: '+254714224735',
+    phone: '+254-714224735',
     gender: 'male'
 };
-export let authData: AuthData = <AuthData>{
-    email: newUser.email,
+export let authorAuthData: AuthData = <AuthData>{
+    email: authorUser.email,
     password,
-    phone: newUser.phone
+    phone: authorUser.phone
 };
-export let updates = {
-    email: 'example@domain.net',
-    dob: new Date('1997-9-12'),
-    password: 'qweerttyuuiop'
+export let contributorUser: IUser = <IUser>{
+    name: 'Lola Vivian',
+    email: 'lol.v90@gmail.com',
+    phone: '+101-71430135',
+    gender: 'female'
 };
-    
+export let contributorAuthData: AuthData = <AuthData>{
+    email: contributorUser.email,
+    password,
+    phone: contributorUser.phone
+};

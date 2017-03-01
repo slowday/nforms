@@ -54,7 +54,7 @@
   },
   "scripts": {
     "postinstall": "npm run build",
-    "test": "mocha --reporter spec --compilers ts:ts-node/register test/**/*.spec.ts",
+    "test": "mocha --reporter spec --compilers ts:ts-node/register test/Index.ts",
     "lint": "tslint -c tslint.json './src/**/*.ts' './test/**/*.ts'",
     "dev": "npm run build && concurrently \"npm run build:watch\" \"npm run dev:server\"",
     "build:watch": "tsc -p tsconfig.json -w",

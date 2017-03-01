@@ -12,7 +12,7 @@ let FormsSchema: mongoose.Schema = new mongoose.Schema({
     form_state: {
         type: String,
         enum: {
-            values: 'draft,complete,ready'.split(','),
+            values: 'draft,closed,ready'.split(','),
             message: 'status not recongnized'
         },
         required: true
