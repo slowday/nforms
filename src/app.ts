@@ -46,15 +46,26 @@ export default class Zushar {
 
     private _appRoutes(): express.Router {
         let router = express.Router();
-        
-        //# USER
-        let user_module = new User(); // install all the routes for user module and bind the user router as middleware to express
-        router.use('/user', user_module.router);
+        //# Cross-Domain
+        router.all('*', (request: express.Request, response: express.Response, next: express.NextFunction) => {
+              response.header('Access-Control-Allow-Origin', '*');
+              response.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+              response.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
+              if (request.method == 'OPTIONS') {
+                    response.status(200).end();
+              } else {
+                    next();
+              }
+        });
 
-        //#FORMS 
+        //# FORMS 
         let forms_module = new Form();
         router.use('/forms', forms_module.router);
 
+        //# USER
+        let user_module = new User(); // install all the routes for user module and bind the user router as middleware to express
+        router.use('/user', user_module.router);
+        
         //# ROOT
         router.get('/', 
             (request: express.Request, response: express.Response, next: express.NextFunction) => {

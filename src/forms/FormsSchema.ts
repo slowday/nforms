@@ -20,7 +20,7 @@ let FormsSchema: mongoose.Schema = new mongoose.Schema({
     author: {
         type: mongoose.Schema.Types.ObjectId,
         required: [true, 'missing author of the form'],
-        ref: 'user-accounts'
+        ref: 'users'
     },
     questions: { type: Array, default: [] },
     
@@ -33,15 +33,8 @@ let FormsSchema: mongoose.Schema = new mongoose.Schema({
     contributors: [{
         type: mongoose.Schema.Types.ObjectId,
         required: [true, 'missing author of the form'],
-        ref: 'user-accounts'
+        ref: 'users'
     }],
-    creation_date: {
-        type: Date,
-        default: new Date()
-    },
-    modification_date: {
-        type: Date
-    },
     deletion: {
         type: Boolean,
         default: false
@@ -62,7 +55,7 @@ export interface IFormsModel extends mongoose.Document{
         respondants: { type: Array, default: [] },
     */
     contributors: mongoose.Schema.Types.Array | any; // suppress error while doing array manipulation
-    deletion: boolean;
+    deletion?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
 }

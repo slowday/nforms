@@ -82,20 +82,20 @@ describe('[zushar-api] User Module', function () {
     it ('Should update a user account', (done) => {
 
         chai
-            .request(`http://127.0.0.1:${port}`)
-            .put('/user/')
-            .set('Authorization', `Bearer ${userToken}`)
-            .send({
-                auth: sampleAuth,
-                updates: sampleUpdates
-            })
-            .end((err, res) => {
-                chai.expect(err).to.be.null
-                chai.expect(res.status).to.eql(200);
-                chai.expect(res).to.be.json;
-                chai.expect(res.body).to.have.all.keys('message', 'done', 'timestamp');           
-                done();
-            });
+        .request(`http://127.0.0.1:${port}`)
+        .put('/user/')
+        .set('Authorization', `Bearer ${userToken}`)
+        .send({
+            auth: sampleAuth,
+            updates: sampleUpdates
+        })
+        .end((err, res) => {
+            chai.expect(err).to.be.null
+            chai.expect(res.status).to.eql(200);
+            chai.expect(res).to.be.json;
+            chai.expect(res.body).to.have.all.keys('message', 'done', 'timestamp');           
+            done();
+        });
     });
 
     //#test: remove
@@ -106,7 +106,7 @@ describe('[zushar-api] User Module', function () {
             phone: sampleUser.phone
         };
 
-        chai
+         chai
         .request(`http://127.0.0.1:${port}`)
         .del('/user/')
         .set('Authorization', `Bearer ${userToken}`)
@@ -124,7 +124,7 @@ describe('[zushar-api] User Module', function () {
     
     after('Creator a user whose an author', (done) => {
 		//# create a user
-		chai
+		 chai
 		.request(`http://127.0.0.1:${port}`)
 		.post('/user/')
 		.send({ 

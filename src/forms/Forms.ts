@@ -26,18 +26,18 @@ export class Form{
         })
         //#contributors endpoints
         let miniRouter: express.Router = express.Router();
-        miniRouter.post('/:form_id', this._addContributor);
-        miniRouter.get('/:form_id', this._getContributors);
-        miniRouter.delete('/:form_id', this._removeContributor);
+        miniRouter.post('/:id', this._addContributor);
+        miniRouter.get('/:id', this._getContributors);
+        miniRouter.delete('/:id', this._removeContributor);
 
         //#install routes
         this.router.use(Auth.authJWT, Auth.getLoggedInUser);
-        this.router.use('/contributor', miniRouter);
         this.router.post('/', this._createForm);
         this.router.get('/', this._getAllForms);
-        this.router.get('/form_id/:form_user_type', this._getOneForm);
-        this.router.put('/form_id/:form_user_type', this._updateForm);
-        this.router.delete('/form_id/:form_user_type', this._removeForm);
+        this.router.get('/:id', this._getOneForm);
+        this.router.put('/:id', this._updateForm);
+        this.router.delete('/:id', this._removeForm);
+        this.router.use('/contributor', miniRouter);
     }
 
     private _createForm(request: any, response: express.Response, next: express.NextFunction): void {
@@ -51,7 +51,11 @@ export class Form{
             })
         )
         .then((data) => {
-            response.json(data);
+            response.json({
+                message: `${data.name} is created successfully`,
+                timestamp: new Date().toDateString(),
+                form: data
+            });
         })
         .catch((err: Error) => {
             next(err);
@@ -62,7 +66,11 @@ export class Form{
         Forms
         .getAll()
         .then((data)=>{
-            response.json(data);
+            response.json({
+                message: `${data.length} forms retrieved`,
+                timestamp: new Date().toDateString(),
+                forms: data
+            });
         })
         .catch((err: Error) => {
             next(err);
@@ -70,21 +78,33 @@ export class Form{
     }
 
     private _getOneForm(request: any, response: express.Response, next: express.NextFunction): void {
-        /* *
-         * @param: form_id, form_user_type
-        */
+        //@param: form_id, form_user_type
 
         // implement the form user validation data structure
         let form_auth: formUser = {
             account_id: request.zushar_auth.id,
-            account: request.params.form_user_type
+            account: <string>request.query.user_type
         };
+
         Forms.getOne(
-            request.params.form_id,
+            request.params.id,
             form_auth
         )
         .then((data)=>{
-            response.json(data);
+            if (!_.isNull(data)) {
+                response.json({
+                    message: `${data.name} is retrieved`,
+                    timestamp: new Date().toDateString(),
+                    form: data
+                });
+            }
+            else {
+                response.json({
+                    message: `Could not retrieve requested form`,
+                    timestamp: new Date().toDateString(),
+                    form: null
+                });
+            }
         })
         .catch((err: Error) => {
             next(err);
@@ -100,15 +120,19 @@ export class Form{
         // implement the form user validation data structure
         let form_auth: formUser = {
             account_id: request.zushar_auth.id,
-            account: request.params.form_user_type
+            account: request.query.user_type
         };
         Forms.update(
-            request.params.form_id, 
+            request.params.id, 
             form_auth,
             request.body.updates
         )
         .then((data)=>{
-            response.json(data);
+            response.json({
+                message: `${data.name} is retrieved`,
+                timestamp: new Date().toDateString(),
+                form: data
+            });
         })
         .catch((err: Error) => {
             next(err);
@@ -120,7 +144,7 @@ export class Form{
          * @param: form_id, form_user_type
         */
         Forms.remove(
-            request.params.form_id, 
+            request.params.id, 
             request.zushar_auth.id
         )
         .then((data)=>{
@@ -137,7 +161,7 @@ export class Form{
          * @body: payload
         */
         FormContributors.add(
-            request.params.form_id,
+            request.params.id,
             request.zushar_auth.id,
             request.body.payload
         )
@@ -154,7 +178,7 @@ export class Form{
          * @param: form_id
         */
         FormContributors.getAll(
-            request.params.form_id
+            request.params.id
         )
         .then((data)=>{
             response.json(data);
@@ -170,7 +194,7 @@ export class Form{
          * @body: contributor
         */
         FormContributors.remove(
-            request.params.form_id,
+            request.params.id,
             request.zushar_auth.id,
             request.body.contributor
         )

@@ -16,17 +16,15 @@ export let logger: any = new (winston.Logger)({
             level: 'info', 
             colorize: true 
         }),
-        new (winston.transports.File)({
+        new (winston.transports.Console)({
             name: '[zushar-api::warnings]',
             level: 'warn',
-            prettyPrint: true,
-            filename: path.resolve(__dirname, '../logs/zushar-warnings.log')
+            colorize: true 
         }),
-        new (winston.transports.File)({
+        new (winston.transports.Console)({
             name: '[zushar-api::error]',
             level: 'error',
-            prettyPrint: true,
-            filename: path.resolve(__dirname, '../logs/zushar-errors.log')
+            colorize: true 
         })
   ]
 }); 
