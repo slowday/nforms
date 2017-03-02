@@ -58,5 +58,6 @@ export default class Auth {
     
     static refreshToken(request: express.Request, response: express.Response, next: express.NextFunction) {
         // requires user module
+        
     }    
 }
