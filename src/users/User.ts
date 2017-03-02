@@ -3,6 +3,7 @@
 */
 
 import * as express from 'express';
+import * as _ from 'lodash';
 import * as UserModel from './UserModel';
 import Auth from '../auth';
 
@@ -60,10 +61,18 @@ export class User{
     private _updateUser(request: any, response: express.Response, next: express.NextFunction): void {
         UserModel.updateUser(request.zushar_auth.id, request.body.auth, request.body.updates)
             .then((results) => {
-                response.json({
-                    message: `User ${ (results.done) ? `is` : `is not` } updated`,
-                    ...results
-                });
+                if (!_.isEmpty(results)) {
+                    response.json({
+                        message: `User ${ (results.done) ? `is` : `is not` } updated`,
+                        ...results
+                    });
+                }
+                else {
+                    response.json({
+                        message: `User ${ (results.done) ? `is` : `is not` } updated`,
+                        ...results
+                    });
+                }
             })
             .catch((err) => {
                 next(err);
@@ -74,10 +83,18 @@ export class User{
     protected _disableUser(request: any, response: express.Response, next: express.NextFunction): void {
         UserModel.updateUser(request.zushar_auth.id, request.body.auth, { deletion: true })
             .then((results) => {
-                response.json({
-                    message: `User ${ (results.done) ? `is` : `is not` } updated`,
-                    ...results
-                });
+                if (!_.isEmpty(results)) {
+                    response.json({
+                        message: `User ${ (results.done) ? `is` : `is not` } deleted`,
+                        ...results
+                    });
+                }
+                else {
+                    response.json({
+                        message: `User ${ (results.done) ? `is` : `is not` } deleted`,
+                        results: null
+                    });
+                }
             })
             .catch((err) => {
                 next(err);
