@@ -1,0 +1,579 @@
+{
+	"variables": [],
+	"info": {
+		"name": "zushar-api",
+		"_postman_id": "4d095e07-0dd7-4d73-9fb7-b247989bc108",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "zushar forms utility",
+			"description": "",
+			"item": [
+				{
+					"name": "Add Contributor",
+					"request": {
+						"url": "http://127.0.0.1:3000/api/forms/contributors/{{zushar_form_id}}/{{zushar_user_id}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{zushar_token}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"contributor\": \"{{zushar_contributor}}\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "zushar second user account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody); // convert the server response to JSON object ",
+									"postman.setEnvironmentVariable(\"zushar_contributor\", data._id);"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable(\"zushar_contributor\", null);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://127.0.0.1:3000/api/user/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Yustus Kesho\",\n  \"phone\": \"+254715196010\",\n  \"email\": \"kesho.yu@gmail.com\",\n  \"dob\": \"1999-10-01\",\n  \"gender\": \"male\",\n  \"password\": \"qwertyuiop\"\n}"
+						},
+						"description": "This is for the purposes of adding a legit contributor to the contributors list in a single form"
+					},
+					"response": []
+				},
+				{
+					"name": "Get list of all contributors",
+					"request": {
+						"url": "http://127.0.0.1:3000/api/forms/contributors/{{zushar_form_id}}/{{zushar_user_id}}/author",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{zushar_token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "zushar remove contributors",
+					"request": {
+						"url": "http://127.0.0.1:3000/api/forms/contributors/{{zushar_form_id}}/{{zushar_user_id}}",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{zushar_token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"contributor\": \"{{zushar_contributor}}\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "zushar intergrated sampler",
+			"description": "",
+			"item": [
+				{
+					"name": "zushar sample contributor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody); // convert the server response to JSON object ",
+									"postman.setEnvironmentVariable(\"zushar_token\", data.user.jwt_token);",
+									"postman.setEnvironmentVariable(\"zushar_contributor_id\", data.user._id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://127.0.0.1:3000/user/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_details\": {\n  \t\"name\": \"Sample Contributor\",\n\t\"phone\": \"+254710984035\",\n\t\"email\": \"contributor@sample.com\",\n\t\"dob\": \"1980-10-15\",\n\t\"gender\": \"male\"\n  },\n  \"password\": \"xyz.metoyourpassword\"\n}"
+						},
+						"description": "a sample user for performing contribution"
+					},
+					"response": []
+				},
+				{
+					"name": "zushar sample author",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody); // convert the server response to JSON object ",
+									"postman.setEnvironmentVariable(\"zushar_token\", data.user.jwt_token);",
+									"postman.setEnvironmentVariable(\"zushar_author_id\", data.user._id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://127.0.0.1:3000/user/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_details\": {\n  \t\"name\": \"Sample Author\",\n\t\"phone\": \"+254710284735\",\n\t\"email\": \"author@sample.com\",\n\t\"dob\": \"1985-12-25\",\n\t\"gender\": \"female\"\n  },\n  \"password\": \"1234.qwertyuiop\"\n}"
+						},
+						"description": "creating an author account for creating a form"
+					},
+					"response": []
+				},
+				{
+					"name": "zushar form creation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody); // convert the server response to JSON object ",
+									"postman.setEnvironmentVariable(\"zushar_form_id\", data.form._id);"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable(\"zushar_form_id\", null);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://127.0.0.1:3000/forms/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{zushar_token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n  \"form\": {\n    \"name\": \"sample form 1970\",\n    \"form_state\": \"draft\",\n    \"questions\": [\n      {\n        \"id\": \"12345\",\n          \"label\": \"What is your name ?\",\n          \"fieldType\": \"text-input\",\n          \"field\": \"normal\",\n          \"instructions\": \"example: Firstname Lastname Middlename\",\n          \"isMandatory\": true,\n          \"addon\": {\n            \"prefix\": null,\n            \"suffix\": null\n          },\n          \"addedBy\": \"user\",\n          \"params\": {\n            \"max\": 225,\n            \"min\": 10\n          },\n          \"placeholder\": \"example: John Doe Dean\"  \n      }  \n    ]\n  }\n}"
+						},
+						"description": "creating a sample form"
+					},
+					"response": []
+				},
+				{
+					"name": "zushar add contributor",
+					"request": {
+						"url": "http://127.0.0.1:3000/forms/contributors/{{zushar_form_id}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{zushar_token}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"contributor\": \"{{zushar_contributor_id}}\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "zushar get contributors list",
+					"request": {
+						"url": "http://127.0.0.1:3000/forms/contributors/{{zushar_form_id}}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{zushar_token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "zushar remove contributor",
+					"request": {
+						"url": "http://127.0.0.1:3000/forms/contributors/{{zushar_form_id}}",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{zushar_token}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"contributor\": \"{{zushar_contributor_id}}\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "zushar user registration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var data = JSON.parse(responseBody); // convert the server response to JSON object ",
+							"postman.setEnvironmentVariable(\"zushar_token\", data.user.jwt_token);",
+							"postman.setEnvironmentVariable(\"zushar_user_id\", data.user._id);"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.setEnvironmentVariable(\"zushar_token\", null);",
+							"postman.setEnvironmentVariable(\"zushar_user_id\", null);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://127.0.0.1:3000/user/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{zushar_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user_details\": {\n  \t\"name\": \"John Waweru\",\n\t\"phone\": \"+254714224735\",\n\t\"email\": \"waweruj00@outlook.com\",\n\t\"dob\": \"1995-12-25\",\n\t\"gender\": \"male\"\n  },\n  \"password\": \"qwertyuiop\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "zushar login user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var data = JSON.parse(responseBody); // convert the server response to JSON object ",
+							"postman.setEnvironmentVariable(\"zushar_token\", data.user.jwt_token);",
+							"postman.setEnvironmentVariable(\"zushar_user_id\", data.user._id);"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.setEnvironmentVariable(\"zushar_token\", null);",
+							"postman.setEnvironmentVariable(\"zushar_user_id\", null);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://127.0.0.1:3000/user/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"auth\": {\n  \t\"phone\": \"+254714224735\",\n\t\"email\": \"waweruj00@outlook.com\",\n\t\"password\": \"qwertyuiop\"\n  }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "zushar user account updates",
+			"request": {
+				"url": "http://127.0.0.1:3000/user/",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{zushar_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"auth\": {\n\t\"email\": \"waweruj00@outlook.com\",\n\t\"phone\": \"+254714224735\",\n\t\"password\": \"qwertyuiop\"\n  },\n  \"updates\": {\n    \"email\": \"waweruj00@hotmail.com\",\n    \"phone\": \"+254713345123\",\n    \"name\": \"Wambugu Waweru\",\n    \"password\": \"metoyourpassword\"\n  }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "zushar user deletion",
+			"request": {
+				"url": "http://127.0.0.1:3000/user/",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{zushar_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"auth\": {\n\t\"email\": \"waweruj00@hotmail.com\",\n\t\"phone\": \"+254713345123\",\n\t\"password\": \"metoyourpassword\"\n  }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "zushar create form",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var data = JSON.parse(responseBody); // convert the server response to JSON object ",
+							"postman.setEnvironmentVariable(\"zushar_form_id\", data._id);"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.setEnvironmentVariable(\"zushar_form_id\", null);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://127.0.0.1:3000/api/forms/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{zushar_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n  \"form\": {\n    \"name\": \"sample form 1\",\n    \"form_state\": \"draft\",\n    \"questions\": [\n      {\n        \"id\": \"12345\",\n          \"label\": \"What is your name ?\",\n          \"fieldType\": \"text-input\",\n          \"field\": \"normal\",\n          \"instructions\": \"example: Firstname Lastname Middlename\",\n          \"isMandatory\": true,\n          \"addon\": {\n            \"prefix\": null,\n            \"suffix\": null\n          },\n          \"addedBy\": \"user\",\n          \"params\": {\n            \"max\": 225,\n            \"min\": 10\n          },\n          \"placeholder\": \"example: John Doe Dean\"  \n      }  \n    ]\n  }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "zushar get forms",
+			"request": {
+				"url": "http://127.0.0.1:3000/api/forms/{{zushar_user_id}}/author",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{zushar_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "zushar get form",
+			"request": {
+				"url": "http://127.0.0.1:3000/api/forms/{{zushar_form_id}}?user_type=author",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{zushar_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "zushar form update",
+			"request": {
+				"url": "http://127.0.0.1:3000/api/forms/{{zushar_form_id}}/{{zushar_user_id}}?user_type=author",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{zushar_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"form\": {\n    \"name\" : \"Sample Form\",\n    \"form_state\": \"complete\",\n    \"questions\": [\n      {\n          \"placeholder\": \"example: John Doe Dean\",\n          \"params\": {\n            \"min\": 10,\n            \"max\": 225\n          },\n          \"addedBy\": \"user\",\n          \"addon\": {\n            \"suffix\": null,\n            \"prefix\": null\n          },\n          \"isMandatory\": true,\n          \"instructions\": \"example: Firstname Lastname Middlename\",\n          \"field\": \"normal\",\n          \"fieldType\": \"text-input\",\n          \"label\": \"What is your name ?\",\n          \"id\": \"12345\"\n        },\n        {\n          \"placeholder\": \"example: example@domain.com\",\n          \"validate\": false,\n          \"addedBy\": \"user\",\n          \"isMandatory\": true,\n          \"instructions\": \"must be a valid email address\",\n          \"field\": \"email\",\n          \"fieldType\": \"text-input\",\n          \"label\": \"What is your official email address ?\",\n          \"id\": \"23414\"\n        }\n    ]\n  }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "zushar form deletion",
+			"request": {
+				"url": "http://127.0.0.1:3000/api/forms/{{zushar_form_id}}/{{zushar_user_id}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{zushar_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
