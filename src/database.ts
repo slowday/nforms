@@ -14,11 +14,7 @@ export default class Database {
     */
     static connect(connUri: string): void {
         (<any>mongoose).Promise = require('es6-promise').Promise;
-        mongoose.connect(connUri, {
-            'db': {
-                'native_parse': true
-            }
-        });
+        mongoose.connect(connUri);
         mongoose.set('debug', (process.env.NODE_ENV==='development'))
         Database._connectionEvents();
     }
