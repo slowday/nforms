@@ -1,6 +1,6 @@
 # zushar-api #
 [ ![Codeship Status for trendy-weshy/zushar-api](https://app.codeship.com/projects/2be605a0-e0bc-0134-8f7a-5ecc5558b622/status?branch=master)](https://app.codeship.com/projects/205310)
-> a RESTful web resource for zushar form builder web tool.
+> a RESTful web resource for zushar form builder web tool. [visit zushar web tool](https://zushar.herokuapp.com/)
 
 ## How to install ##
 
