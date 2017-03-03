@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "body-parser": "^1.16.1",
+    "bower": "^1.8.0",
     "compression": "^1.6.2",
     "concurrently": "^3.3.0",
     "cross-env": "^3.1.4",
@@ -58,7 +59,7 @@
     "build:watch": "tsc -p tsconfig.json -w",
     "build": "tsc -p tsconfig.json",
     "dev:server": "cross-env NODE_ENV=development nodemon --debug -L",
-    "postinstall": "cd docs && bower install && cd .. && npm run build",
+    "postinstall": "cd docs && ./node_modules/.bin/bower install && cd .. && npm run build",
     "start": "node index.js"
   },
   "keywords": [],
