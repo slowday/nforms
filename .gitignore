@@ -12,3 +12,4 @@ npm-debug.log
 npm-debug.log.**
 logs/**/*.log
 debug.log
+docs/bower_components
