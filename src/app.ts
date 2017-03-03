@@ -21,7 +21,18 @@ export default class Zushar {
     */
     public static app: express.Application;
     constructor() {
-        Database.connect( <string>process.env.MONGO_URI ); // connect to the database
+        let uri: (env: string)=>string = (env: string): string => {
+            switch(env) {
+                case 'development':
+                    return process.env.MONGO_URI;
+                case 'testing':
+                    return process.env.MONGO_URI;
+                default:
+                    return process.env.MONGO_URI_MLAB;
+            }
+        };
+
+        Database.connect( uri(process.env.NODE_ENV) ); // connect to the database
         // #Express
         Zushar.app = express(); // init the express app
         this._middlewares(); // install middlewares
@@ -71,6 +82,15 @@ export default class Zushar {
         router.get('/', 
             (request: express.Request, response: express.Response, next: express.NextFunction) => {
                response.sendFile(path.resolve(__dirname, '../docs/index.html'));
+            });
+
+        router.get('/about-api', 
+            (request: express.Request, response: express.Response, next: express.NextFunction) => {
+               response.json({
+                    name: 'Zushar Api Server',
+                    version: '0.2.0',
+                    timestamp: new Date()
+                });
             });
 
         return router;

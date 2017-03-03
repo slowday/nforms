@@ -1,0 +1,14 @@
+{
+    "name": "zushar-api",
+    "description": "form builder tool web resource api",
+    "keywords": [
+    ],
+    "website": "https://zushar-api.herokuapp.com/", 
+    "repository": "https://github.com/trendy-weshy/zushar-api.git",
+    "formation": {
+        "web": {
+          "quantity": 1,
+          "size": "free"
+        }
+    }
+}

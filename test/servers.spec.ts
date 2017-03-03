@@ -19,12 +19,12 @@ describe('Zushar Api Server', function () {
         
         chai
             .request(`http://127.0.0.1:${port}`)
-            .get('/')
+            .get('/about-api')
             .end((err, res) => {
                 chai.expect(err).to.be.null
                 chai.expect(res.status).to.eql(200);
                 chai.expect(res).to.be.json;
-                chai.expect(res.body).to.have.all.keys('name', 'version', 'message', 'timestamp');
+                chai.expect(res.body).to.have.all.keys('name', 'version', 'timestamp');
                 done();
             });
     });

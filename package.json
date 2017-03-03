@@ -52,14 +52,14 @@
     "tslint-eslint-rules": "^3.4.0"
   },
   "scripts": {
-    "postinstall": "npm run build",
     "test": "mocha --reporter spec --compilers ts:ts-node/register test/Index.ts",
     "lint": "tslint -c tslint.json './src/**/*.ts' './test/**/*.ts'",
     "dev": "npm run build && concurrently \"npm run build:watch\" \"npm run dev:server\"",
     "build:watch": "tsc -p tsconfig.json -w",
     "build": "tsc -p tsconfig.json",
-    "dev:server": "cross-env NODE_ENV=developement nodemon --debug -L",
-    "start": "npm run build && concurrently \"npm run build:watch\" \"cross-env NODE_ENV=production node index\""
+    "dev:server": "cross-env NODE_ENV=development nodemon --debug -L",
+    "postinstall": "npm run build",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "john waweru<wambugu.john.waweru@outlook.com>",
