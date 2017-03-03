@@ -1,5 +1,5 @@
 # zushar-api #
-[ ![Codeship Status for trendy_weshy/sibasi-health](https://app.codeship.com/projects/e803d190-e01a-0134-31eb-46050fed2f07/status?branch=master)](https://app.codeship.com/projects/205150)
+[ ![Codeship Status for trendy-weshy/zushar-api](https://app.codeship.com/projects/2be605a0-e0bc-0134-8f7a-5ecc5558b622/status?branch=master)](https://app.codeship.com/projects/205310)
 > a RESTful web resource for zushar form builder web tool.
 
 ## How to install ##
