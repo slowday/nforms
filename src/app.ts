@@ -39,6 +39,7 @@ export default class Zushar {
         Zushar.app.use(logger('dev'));
         Zushar.app.use(bodyParser.json());
         Zushar.app.use(bodyParser.urlencoded({ extended: false }));
+        Zushar.app.use(express.static(path.resolve(__dirname, '../docs')))
         Zushar.app.use(
             this._appRoutes() // install api-routes as middleware on express application
         ); 
@@ -57,7 +58,7 @@ export default class Zushar {
                     next();
               }
         });
-
+    
         //# FORMS 
         let forms_module = new Form();
         router.use('/forms', forms_module.router);
@@ -69,12 +70,7 @@ export default class Zushar {
         //# ROOT
         router.get('/', 
             (request: express.Request, response: express.Response, next: express.NextFunction) => {
-               response.json({
-                   name: 'zushar-api',
-                   message: 'Hello! Welcome to zushar api.',
-                   version: '1.0.0',
-                   timestamp: new Date().toDateString()
-               });
+               response.sendFile(path.resolve(__dirname, '../docs/index.html'));
             });
 
         return router;
