@@ -1,6 +1,6 @@
 # nforms #
 
-> A RESTful web resource for nforms is form builder service.
+modules for a simple form building service
 
 ## Guide ##
 
