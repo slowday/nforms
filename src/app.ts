@@ -50,7 +50,6 @@ export default class Zushar {
         Zushar.app.use(logger('dev'));
         Zushar.app.use(bodyParser.json());
         Zushar.app.use(bodyParser.urlencoded({ extended: false }));
-        Zushar.app.use(express.static(path.resolve(__dirname, '../docs')))
         Zushar.app.use(
             this._appRoutes() // install api-routes as middleware on express application
         ); 
